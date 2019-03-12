@@ -1,0 +1,42 @@
+{
+    "name": "saintsystems/nova-linkable-metrics",
+    "description": "Linkable metrics for Laravel Nova.",
+    "keywords": [
+        "laravel",
+        "nova",
+        "metrics"
+    ],
+    "authors": [
+        {
+            "name": "Saint Systems"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0",
+        "laravel/nova": "~2.0"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "SaintSystems\\Nova\\LinkableMetrics\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SaintSystems\\Nova\\LinkableMetrics\\CardServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
