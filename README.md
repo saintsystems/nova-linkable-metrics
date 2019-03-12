@@ -5,8 +5,7 @@
 
 Add custom router-links to your Laravel Nova metrics.
 
-![screenshot](https://ssms.us/9f2f9640da9f/dl)
-![screenshot](https://ssms.us/802b129414f3/dl)
+![screenshot](screenshot.gif)
 
 ## Installation
 
