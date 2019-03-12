@@ -2,7 +2,6 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/saintsystems/nova-linkable-metrics.svg?style=flat-square)](https://packagist.org/packages/saintsystems/nova-linkable-metrics)
 [![Total Downloads](https://img.shields.io/packagist/dt/saintsystems/nova-linkable-metrics.svg?style=flat-square)](https://packagist.org/packages/saintsystems/nova-linkable-metrics)
-[![Build Status](https://travis-ci.org/saintsystems/nova-linkable-metrics.svg?branch=master)](https://travis-ci.org/saintsystems/nova-linkable-metrics)
 
 Add custom router-links to your Laravel Nova metrics.
 
