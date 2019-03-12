@@ -18,13 +18,7 @@ composer require saintsystems/nova-linkable-metrics
 
 ## Usage
 
-To add the link ability to your Laravel Nova metric cards, you need to add one of the `Linkable` traits to your metrics.
-
-Depending on your metric type, these are the available traits:
-
-- `LinkableValue`
-- `LinkableTrend`
-- `LinkablePartition`
+To add the link ability to your Laravel Nova metric cards, you need to add the `Linkable` traits to your metrics.
 
 For example, within your custom Nova value metric card:
 ```php
