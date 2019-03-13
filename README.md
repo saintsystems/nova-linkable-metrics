@@ -30,9 +30,7 @@ use Linkable;
 
 ## Defining Metric Links
 
-**NOTE:** URLs must be valid JSON that can be parsed by the vue-router.
-
-You can define metric links using the `url` method from the `Linkable` trait in one of two ways:
+You can define metric links using the `route` method from the `Linkable` trait in one of two ways:
 
 1. When the card is registered:
 ```php
@@ -46,7 +44,7 @@ You can define metric links using the `url` method from the `Linkable` trait in 
     protected function cards()
     {
         return [
-            (new JobsInProgress)->width('1/3')->url('{"name":"index", "params":{"resourceName":"jobs"}}'),`
+            (new JobsInProgress)->width('1/3')->route('index', ['resourceName' => 'jobs']),`
         ];
     }
 ```
@@ -64,7 +62,14 @@ You can define metric links using the `url` method from the `Linkable` trait in 
     public function calculate(Request $request, UnitOfMeasure $unitOfMeasure)
     {
         $result = $this->result($unitOfMeasure->items()->count());
-        return $result->url('{"name":"index", "params":{"resourceName":"items"}, "query": {"viaResource":"' . $request->resource . '","viaResourceId":"' . $unitOfMeasure->id . '","viaRelationship":"items","relationshipType":"hasMany"}}');
+        $params = ['resourceName' => 'items'];
+        $query = [
+            'viaResource' => $request->resource,
+            'viaResourceId' => $unitOfMeasure->id,
+            'viaRelationship' => 'items',
+            'relationshipType' => 'hasMany',
+        ];
+        return $result->route('index', $params, $query);
     }
 ```
 

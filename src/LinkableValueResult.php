@@ -27,6 +27,19 @@ class LinkableValueResult extends ValueResult
     }
 
     /**
+     * Set a link to a route
+     */
+    public function route($routeName, array $params = [], array $query = [])
+    {
+        $route = [
+            'name' => $routeName,
+            'params' => $params,
+            'query' => $query
+        ];
+        return $this->url(json_encode($route));
+    }
+
+    /**
      * Prepare the metric for JSON serialization.
      *
      * @return array
