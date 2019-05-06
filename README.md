@@ -51,6 +51,9 @@ use LinkablePartition;
 You can define metric links using the `route` method from the `Linkable` trait in one of two ways:
 
 1. When the card is registered:
+
+**Index Route**
+
 ```php
     // NovaServiceProvider.php
 
@@ -62,10 +65,29 @@ You can define metric links using the `route` method from the `Linkable` trait i
     protected function cards()
     {
         return [
-            (new JobsInProgress)->width('1/3')->route('index', ['resourceName' => 'jobs']),`
+            (new JobsInProgress)->width('1/3')->route('index', ['resourceName' => 'jobs']),
         ];
     }
 ```
+
+**OR using a Lens Route**
+
+```php
+    // NovaServiceProvider.php
+
+    /**
+     * Get the cards that should be displayed on the Nova dashboard.
+     *
+     * @return array
+     */
+    protected function cards()
+    {
+        return [
+            (new JobsInProgress)->width('1/3')->route('lens', ['resourceName' => 'jobs', 'lens' => 'all-jobs']),
+        ];
+    }
+```
+
 2. Or, within the card itself (useful for cards only available on detail screens where you might want to filter the url based on the current resource):
 
 ```php
