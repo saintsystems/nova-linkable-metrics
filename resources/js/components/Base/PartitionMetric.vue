@@ -16,7 +16,6 @@
                 >
             </template>
         </h3>
-
         <div class="overflow-hidden overflow-y-auto max-h-90px">
             <ul class="list-reset">
                 <li v-for="item in formattedItems" class="text-xs text-80 leading-normal">
@@ -111,6 +110,7 @@ export default {
                 'vertical-center',
                 'rounded-b-lg',
                 'ct-chart',
+                'mr-4',
                 this.formattedTotal <= 0 ? 'invisible' : '',
             ]
         },

@@ -4,15 +4,15 @@
             <h3 class="mr-3 text-base text-80 font-bold">{{ title }}</h3>
 
             <select
-              v-if="ranges.length > 0"
-              @change="handleChange"
-              class="ml-auto min-w-24 h-6 text-xs no-appearance bg-40"
+                v-if="ranges.length > 0"
+                @change="handleChange"
+                class="select-box-sm ml-auto min-w-24 h-6 text-xs appearance-none bg-40 pl-2 pr-6 active:outline-none active:shadow-outline focus:outline-none focus:shadow-outline"
             >
                 <option
-                  v-for="option in ranges"
-                  :key="option.value"
-                  :value="option.value"
-                  :selected="selectedRangeKey == option.value"
+                    v-for="option in ranges"
+                    :key="option.value"
+                    :value="option.value"
+                    :selected="selectedRangeKey == option.value"
                 >
                     {{ option.label }}
                 </option>
@@ -78,7 +78,9 @@
 </template>
 
 <script>
-import numeral from 'numeral'
+import numbro from 'numbro'
+import numbroLanguages from 'numbro/dist/languages.min'
+Object.values(numbroLanguages).forEach(l => numbro.registerLanguage(l))
 import { SingularOrPlural } from 'laravel-nova'
 
 export default {
@@ -91,12 +93,21 @@ export default {
         url: '',
         prefix: '',
         suffix: '',
+        suffixInflection: {
+            default: true,
+        },
         selectedRangeKey: [String, Number],
         ranges: { type: Array, default: () => [] },
         format: {
             type: String,
             default: '(0[.]00a)',
         },
+    },
+
+    mounted() {
+        if (Nova.config.locale) {
+            numbro.setLanguage(Nova.config.locale.replace('_', '-'))
+        }
     },
 
     methods: {
@@ -149,13 +160,17 @@ export default {
 
         formattedValue() {
             if (!this.isNullValue) {
-                return this.prefix + numeral(this.value).format(this.format)
+                return this.prefix + numbro(new String(this.value)).format(this.format)
             }
 
             return ''
         },
 
         formattedSuffix() {
+            if (this.suffixInflection === false) {
+                return this.suffix
+            }
+
             return SingularOrPlural(this.value, this.suffix)
         },
     },
