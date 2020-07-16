@@ -15,7 +15,7 @@
         "cross-env": "^5.0.0",
         "laravel-mix": "^1.0",
         "laravel-nova": "^1.0.2",
-        "lodash": "^4.17.11",
+        "lodash": "^4.17.19",
         "numbro": "^2.1.2"
     },
     "dependencies": {
