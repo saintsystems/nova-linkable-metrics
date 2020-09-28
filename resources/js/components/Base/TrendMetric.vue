@@ -3,6 +3,24 @@
         <div class="flex mb-4">
             <h3 class="mr-3 text-base text-80 font-bold">{{ title }}</h3>
 
+            <div v-if="helpText" class="absolute pin-r pin-b p-2 z-25">
+                <tooltip trigger="click">
+                <icon
+                    type="help"
+                    viewBox="0 0 17 17"
+                    height="16"
+                    width="16"
+                    class="cursor-pointer text-60 -mb-1"
+                />
+
+                <tooltip-content
+                    slot="content"
+                    v-html="helpText"
+                    :max-width="helpWidth"
+                />
+                </tooltip>
+            </div>
+
             <select
                 v-if="ranges.length > 0"
                 @change="handleChange"
@@ -37,9 +55,6 @@
 </template>
 
 <script>
-import numbro from 'numbro'
-import numbroLanguages from 'numbro/dist/languages.min'
-Object.values(numbroLanguages).forEach(l => numbro.registerLanguage(l))
 import _ from 'lodash'
 import Chartist from 'chartist'
 import 'chartist-plugin-tooltips'
@@ -47,23 +62,18 @@ import 'chartist/dist/chartist.min.css'
 import { SingularOrPlural } from 'laravel-nova'
 import 'chartist-plugin-tooltips/dist/chartist-plugin-tooltip.css'
 
-// const getLabelForValue = (value, vm) => {
-//     const { labels, series } = vm.chartData
-
-//     return labels[_.findIndex(series[0], (item) => {
-//         return item.value == value;
-//     })]
-// }
-
 export default {
     name: 'BaseTrendMetric',
 
     props: {
         loading: Boolean,
         title: {},
+        helpText: {},
+        helpWidth: {},
         value: {},
         url: '',
         chartData: {},
+        maxWidth: {},
         prefix: '',
         suffix: '',
         suffixInflection: true,
@@ -88,10 +98,6 @@ export default {
     },
 
     mounted() {
-        if (Nova.config.locale) {
-            numbro.setLanguage(Nova.config.locale.replace('_', '-'))
-        }
-
         const low = Math.min(...this.chartData)
         const high = Math.max(...this.chartData)
 
@@ -126,23 +132,28 @@ export default {
             },
             plugins: [
                 Chartist.plugins.tooltip({
-                    anchorToPoint: true,
-                    transformTooltipTextFnc: value => {
-                        if (this.prefix) {
-                            return `${this.prefix}${value}`
-                        }
+                anchorToPoint: true,
+                transformTooltipTextFnc: value => {
+                let formattedValue = Nova.formatNumber(
+                    new String(value),
+                    this.format
+                )
 
-                        if (this.suffix) {
-                            const suffix = SingularOrPlural(value, this.suffix)
+                if (this.prefix) {
+                    return `${this.prefix}${formattedValue}`
+                }
 
-                            return `${value} ${suffix}`
-                        }
+                if (this.suffix) {
+                    const suffix = SingularOrPlural(value, this.suffix)
 
-                        return `${value}`
-                    },
-                }),
-            ],
-        })
+                    return `${formattedValue} ${suffix}`
+                }
+
+                return `${formattedValue}`
+            },
+        }),
+      ],
+    })
     },
 
     methods: {
@@ -167,7 +178,7 @@ export default {
 
         formattedValue() {
             if (!this.isNullValue) {
-                const value = numbro(new String(this.value)).format(this.format)
+                const value = Nova.formatNumber(new String(this.value), this.format)
 
                 return `${this.prefix}${value}`
             }

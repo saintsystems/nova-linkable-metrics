@@ -14,9 +14,8 @@
         "chartist-plugin-tooltips": "^0.0.17",
         "cross-env": "^5.0.0",
         "laravel-mix": "^1.0",
-        "laravel-nova": "^1.0.2",
-        "lodash": "^4.17.11",
-        "numbro": "^2.1.2"
+        "laravel-nova": "^1.4.1",
+        "lodash": "^4.17.0"
     },
     "dependencies": {
         "vue": "^2.5.0"
