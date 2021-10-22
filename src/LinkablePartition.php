@@ -14,11 +14,12 @@ trait LinkablePartition
      */
     public function result(array $value)
     {
-        $linkablePartitionResult = new LinkablePartitionResult($value);
+        $linkablePartitionResult = new LinkablePartitionResult(collect($value)->map(function ($number) {
+            return round($number, $this->roundingPrecision, $this->roundingMode);
+        })->toArray());
         if (!empty($this->url)) {
             $linkablePartitionResult->url($this->url);
         }
         return $linkablePartitionResult;
     }
 }
-
