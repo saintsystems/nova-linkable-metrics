@@ -22,7 +22,7 @@ To add the link ability to your Laravel Nova metric cards, you need to add the `
 For example, within your custom Nova value metric card:
 ```php
 // in your Nova value metric card class:
-import SaintSystems\Nova\LinkableMetrics\LinkableValue;
+use SaintSystems\Nova\LinkableMetrics\LinkableValue;
 
 use LinkableValue;
 
@@ -31,7 +31,7 @@ use LinkableValue;
 Within your custom Nova trend metric card:
 ```php
 // in your Nova value metric card class:
-import SaintSystems\Nova\LinkableMetrics\LinkableTrend;
+use SaintSystems\Nova\LinkableMetrics\LinkableTrend;
 
 use LinkableTrend;
 
@@ -40,7 +40,7 @@ use LinkableTrend;
 Within your custom Nova trend partition card:
 ```php
 // in your Nova value metric card class:
-import SaintSystems\Nova\LinkableMetrics\LinkablePartition;
+use SaintSystems\Nova\LinkableMetrics\LinkablePartition;
 
 use LinkablePartition;
 
