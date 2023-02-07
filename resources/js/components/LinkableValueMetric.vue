@@ -1,128 +1,176 @@
 <template>
     <BaseValueMetric
-        @selected="handleRangeSelected"
-        :title="card.name"
-        :previous="previous"
-        :value="value"
-        :ranges="card.ranges"
-        :format="format"
-        :prefix="prefix"
-        :suffix="suffix"
-        :suffix-inflection="suffixInflection"
-        :selected-range-key="selectedRangeKey"
-        :loading="loading"
-        :url="this.card.url"
+      @selected="handleRangeSelected"
+      :title="card.name"
+      :copyable="copyable"
+      :help-text="card.helpText"
+      :help-width="card.helpWidth"
+      :icon="card.icon"
+      :previous="previous"
+      :value="value"
+      :ranges="card.ranges"
+      :format="format"
+      :tooltip-format="tooltipFormat"
+      :prefix="prefix"
+      :suffix="suffix"
+      :suffix-inflection="suffixInflection"
+      :selected-range-key="selectedRangeKey"
+      :loading="loading"
+      :zero-result="zeroResult"
+      :url="this.card.url"
     />
-</template>
+  </template>
 
-<script>
-import { Minimum } from 'laravel-nova'
-import BaseValueMetric from './Base/ValueMetric'
-import ValueMetric from '@/components/Metrics/ValueMetric'
+  <script>
+  import { minimum } from '../util'
+  import { InteractsWithDates, MetricBehavior } from 'laravel-nova'
 
-export default {
+  export default {
+    name: 'ValueMetric',
 
-    extends: ValueMetric,
-
-    components: {
-        BaseValueMetric
-    },
+    mixins: [InteractsWithDates, MetricBehavior],
 
     props: {
-        card: {
-            type: Object,
-            required: true,
-        },
+      card: {
+        type: Object,
+        required: true,
+      },
 
-        resourceName: {
-            type: String,
-            default: '',
-        },
+      resourceName: {
+        type: String,
+        default: '',
+      },
 
-        resourceId: {
-            type: [Number, String],
-            default: '',
-        },
+      resourceId: {
+        type: [Number, String],
+        default: '',
+      },
 
-        lens: {
-            type: String,
-            default: '',
-        },
+      lens: {
+        type: String,
+        default: '',
+      },
     },
 
     data: () => ({
-        loading: true,
-        format: '(0[.]00a)',
-        value: 0,
-        previous: 0,
-        prefix: '',
-        suffix: '',
-        suffixInflection: true,
-        selectedRangeKey: null,
+      loading: true,
+      copyable: false,
+      format: '(0[.]00a)',
+      tooltipFormat: '(0[.]00)',
+      value: 0,
+      previous: 0,
+      prefix: '',
+      suffix: '',
+      suffixInflection: true,
+      selectedRangeKey: null,
+      zeroResult: false,
     }),
 
     watch: {
-        resourceId() {
-            this.fetch()
-        },
+      resourceId() {
+        this.fetch()
+      },
     },
 
     created() {
-        if (this.hasRanges) {
-            this.selectedRangeKey = this.card.ranges[0].value
-        }
+      if (this.hasRanges) {
+        this.selectedRangeKey =
+          this.card.selectedRangeKey || this.card.ranges[0].value
+      }
+
+      this.fetch()
     },
 
     mounted() {
-        this.fetch(this.selectedRangeKey)
+      if (this.card && this.card.refreshWhenFiltersChange === true) {
+        Nova.$on('filter-changed', this.fetch)
+      }
+    },
+
+    beforeUnmount() {
+      if (this.card && this.card.refreshWhenFiltersChange === true) {
+        Nova.$off('filter-changed', this.fetch)
+      }
     },
 
     methods: {
-        handleRangeSelected(key) {
-            this.selectedRangeKey = key
-            this.fetch()
-        },
+      handleRangeSelected(key) {
+        this.selectedRangeKey = key
+        this.fetch()
+      },
 
-        fetch() {
-            this.loading = true
+      fetch() {
+        this.loading = true
 
-            Minimum(Nova.request().get(this.metricEndpoint, this.rangePayload)).then(
-                ({
-                    data: {
-                        value: { value, previous, prefix, suffix, suffixInflection, format },
-                    },
-                }) => {
-                    this.value = value
-                    this.format = format || this.format
-                    this.prefix = prefix || this.prefix
-                    this.suffix = suffix || this.suffix
-                    this.suffixInflection = suffixInflection
-                    this.previous = previous
-                    this.loading = false
-                }
-            )
-        },
+        minimum(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(
+          ({
+            data: {
+              value: {
+                copyable,
+                value,
+                previous,
+                prefix,
+                suffix,
+                suffixInflection,
+                format,
+                tooltipFormat,
+                zeroResult,
+              },
+            },
+          }) => {
+            this.copyable = copyable
+            this.value = value
+            this.format = format || this.format
+            this.tooltipFormat = tooltipFormat || this.tooltipFormat
+            this.prefix = prefix || this.prefix
+            this.suffix = suffix || this.suffix
+            this.suffixInflection = suffixInflection
+            this.zeroResult = zeroResult || this.zeroResult
+            this.previous = previous
+            this.loading = false
+          }
+        )
+      },
     },
 
     computed: {
-        hasRanges() {
-            return this.card.ranges.length > 0
-        },
+      hasRanges() {
+        return this.card.ranges.length > 0
+      },
 
-        rangePayload() {
-            return this.hasRanges ? { params: { range: this.selectedRangeKey } } : {}
-        },
+      metricPayload() {
+        const payload = {
+          params: {
+            timezone: this.userTimezone,
+          },
+        }
 
-        metricEndpoint() {
-            const lens = this.lens !== '' ? `/lens/${this.lens}` : ''
-            if (this.resourceName && this.resourceId) {
-                return `/nova-api/${this.resourceName}${lens}/${this.resourceId}/metrics/${this.card.uriKey}`
-            } else if (this.resourceName) {
-                return `/nova-api/${this.resourceName}${lens}/metrics/${this.card.uriKey}`
-            } else {
-                return `/nova-api/metrics/${this.card.uriKey}`
-            }
-        },
+        if (
+          !Nova.missingResource(this.resourceName) &&
+          this.card &&
+          this.card.refreshWhenFiltersChange === true
+        ) {
+          payload.params.filter =
+            this.$store.getters[`${this.resourceName}/currentEncodedFilters`]
+        }
+
+        if (this.hasRanges) {
+          payload.params.range = this.selectedRangeKey
+        }
+
+        return payload
+      },
+
+      metricEndpoint() {
+        const lens = this.lens !== '' ? `/lens/${this.lens}` : ''
+        if (this.resourceName && this.resourceId) {
+          return `/nova-api/${this.resourceName}${lens}/${this.resourceId}/metrics/${this.card.uriKey}`
+        } else if (this.resourceName) {
+          return `/nova-api/${this.resourceName}${lens}/metrics/${this.card.uriKey}`
+        } else {
+          return `/nova-api/metrics/${this.card.uriKey}`
+        }
+      },
     },
-}
-</script>
+  }
+  </script>
