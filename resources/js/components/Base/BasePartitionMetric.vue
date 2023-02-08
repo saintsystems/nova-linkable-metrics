@@ -1,66 +1,73 @@
 <template>
   <LoadingCard :loading="loading" class="px-6 py-4">
-    <div class="h-6 flex items-center mb-4">
-      <h3 class="mr-3 leading-tight text-sm font-bold">{{ title }}</h3>
+    <h3 class="h-6 flex mb-3 text-sm font-bold">
+      {{ title }}
 
-      <HelpTextTooltip :text="helpText" :width="helpWidth" />
+      <span class="ml-auto font-semibold text-gray-400 text-xs"
+        >({{ formattedTotal }} {{ __('total') }})</span
+      >
+    </h3>
 
-      <SelectControl
-        v-if="ranges.length > 0"
-        class="ml-auto w-[6rem] flex-shrink-0"
-        size="xxs"
-        :options="ranges"
-        v-model:selected="selectedRangeKey"
-        @change="handleChange"
-        :aria-label="__('Select Ranges')"
+    <HelpTextTooltip :text="helpText" :width="helpWidth" />
+
+    <div class="min-h-[90px]">
+      <div class="overflow-hidden overflow-y-auto max-h-[90px]">
+        <ul>
+          <li
+            v-for="item in formattedItems"
+            :key="item.color"
+            class="text-xs leading-normal"
+          >
+            <span
+              class="inline-block rounded-full w-2 h-2 mr-2"
+              :style="{
+                backgroundColor: item.color,
+              }"
+            />{{ item.label }} ({{ item.value }} - {{ item.percentage }}%)
+          </li>
+        </ul>
+      </div>
+
+      <div
+        ref="chart"
+        class="right-[20px]"
+        :class="chartClasses"
+        style="width: 90px; height: 90px; bottom: 30px; top: calc(50% + 15px)"
       />
     </div>
-
-    <p class="flex items-center text-4xl mb-4">
-      {{ formattedValue }}
-      <span v-if="suffix" class="ml-2 text-sm font-bold">{{
-        formattedSuffix
-      }}</span>
-    </p>
-
-    <div
-      ref="chart"
-      class="absolute inset-0 rounded-b-lg ct-chart"
-      style="top: 60%"
-    />
   </LoadingCard>
 </template>
 
 <script>
 import debounce from 'lodash/debounce'
+import map from 'lodash/map'
+import sumBy from 'lodash/sumBy'
 import Chartist from 'chartist'
 import 'chartist/dist/chartist.min.css'
-import { singularOrPlural } from 'laravel-nova'
-import ChartistTooltip from 'chartist-plugin-tooltips-updated'
-import 'chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.css'
+
+const colorForIndex = index =>
+  [
+    '#F5573B',
+    '#F99037',
+    '#F2CB22',
+    '#8FC15D',
+    '#098F56',
+    '#47C1BF',
+    '#1693EB',
+    '#6474D7',
+    '#9C6ADE',
+    '#E471DE',
+  ][index]
 
 export default {
-  name: 'BaseTrendMetric',
-
-  emits: ['selected'],
+  name: 'BasePartitionMetric',
 
   props: {
     loading: Boolean,
-    title: {},
+    title: String,
     helpText: {},
     helpWidth: {},
-    value: {},
-    chartData: {},
-    maxWidth: {},
-    prefix: '',
-    suffix: '',
-    suffixInflection: { type: Boolean, default: true },
-    ranges: { type: Array, default: () => [] },
-    selectedRangeKey: [String, Number],
-    format: {
-      type: String,
-      default: '0[.]00a',
-    },
+    chartData: Array,
   },
 
   data: () => ({
@@ -69,10 +76,6 @@ export default {
   }),
 
   watch: {
-    selectedRangeKey: function (newRange, oldRange) {
-      this.renderChart()
-    },
-
     chartData: function (newData, oldData) {
       this.renderChart()
     },
@@ -89,71 +92,23 @@ export default {
   },
 
   mounted() {
-    const low = Math.min(...this.chartData)
-    const high = Math.max(...this.chartData)
+    this.chartist = new Chartist.Pie(
+      this.$refs.chart,
+      this.formattedChartData,
+      {
+        donut: true,
+        donutWidth: 10,
+        donutSolid: true,
+        startAngle: 270,
+        showLabel: false,
+      }
+    )
 
-    // Use zero as the graph base if the lowest value is greater than or equal to zero.
-    // This avoids the awkward situation where the chart doesn't appear filled in.
-    const areaBase = low >= 0 ? 0 : low
-
-    this.chartist = new Chartist.Line(this.$refs.chart, this.chartData, {
-      lineSmooth: Chartist.Interpolation.none(),
-      fullWidth: true,
-      showPoint: true,
-      showLine: true,
-      showArea: true,
-      chartPadding: {
-        top: 10,
-        right: 0,
-        bottom: 0,
-        left: 0,
-      },
-      low,
-      high,
-      areaBase,
-      axisX: {
-        showGrid: false,
-        showLabel: true,
-        offset: 0,
-      },
-      axisY: {
-        showGrid: false,
-        showLabel: true,
-        offset: 0,
-      },
-      plugins: [
-        ChartistTooltip({
-          pointClass: 'ct-point',
-          anchorToPoint: false,
-        }),
-        ChartistTooltip({
-          pointClass: 'ct-point__left',
-          anchorToPoint: false,
-          tooltipOffset: {
-            x: 50,
-            y: -20,
-          },
-        }),
-        ChartistTooltip({
-          pointClass: 'ct-point__right',
-          anchorToPoint: false,
-          tooltipOffset: {
-            x: -50,
-            y: -20,
-          },
-        }),
-      ],
-    })
-
-    this.chartist.on('draw', data => {
-      if (data.type === 'point') {
-        data.element.attr({
-          'ct:value': this.transformTooltipText(data.value.y),
+    this.chartist.on('draw', context => {
+      if (context.type === 'slice') {
+        context.element.attr({
+          style: `fill: ${context.meta.color} !important`,
         })
-
-        data.element.addClass(
-          this.transformTooltipClass(data.axisX.ticks.length, data.index) ?? ''
-        )
       }
     })
 
@@ -166,65 +121,66 @@ export default {
 
   methods: {
     renderChart() {
-      this.chartist.update(this.chartData)
+      this.chartist.update(this.formattedChartData)
     },
 
-    handleChange(event) {
-      const value = event?.target?.value || event
-
-      this.$emit('selected', value)
-    },
-
-    transformTooltipText(value) {
-      let formattedValue = Nova.formatNumber(new String(value), this.format)
-
-      if (this.prefix) {
-        return `${this.prefix}${formattedValue}`
-      }
-
-      if (this.suffix) {
-        const suffix = this.suffixInflection
-          ? singularOrPlural(value, this.suffix)
-          : this.suffix
-
-        return `${formattedValue} ${suffix}`
-      }
-
-      return `${formattedValue}`
-    },
-
-    transformTooltipClass(total, index) {
-      if (index < 2) {
-        return 'ct-point__left'
-      } else if (index > total - 3) {
-        return 'ct-point__right'
-      }
-
-      return 'ct-point'
+    getItemColor(item, index) {
+      return typeof item.color === 'string' ? item.color : colorForIndex(index)
     },
   },
 
   computed: {
-    isNullValue() {
-      return this.value == null
+    chartClasses() {
+      return [
+        'vertical-center',
+        'rounded-b-lg',
+        'ct-chart',
+        'mr-4',
+        this.currentTotal <= 0 ? 'invisible' : '',
+      ]
     },
 
-    formattedValue() {
-      if (!this.isNullValue) {
-        const value = Nova.formatNumber(new String(this.value), this.format)
-
-        return `${this.prefix}${value}`
-      }
-
-      return ''
+    formattedChartData() {
+      return { labels: this.formattedLabels, series: this.formattedData }
     },
 
-    formattedSuffix() {
-      if (this.suffixInflection === false) {
-        return this.suffix
+    formattedItems() {
+      return map(this.chartData, (item, index) => {
+        return {
+          label: item.label,
+          value: Nova.formatNumber(item.value),
+          color: this.getItemColor(item, index),
+          percentage: Nova.formatNumber(String(item.percentage)),
+        }
+      })
+    },
+
+    formattedLabels() {
+      return map(this.chartData, item => item.label)
+    },
+
+    formattedData() {
+      return map(this.chartData, (item, index) => {
+        return {
+          value: item.value,
+          meta: { color: this.getItemColor(item, index) },
+        }
+      })
+    },
+
+    formattedTotal() {
+      let total = this.currentTotal.toFixed(2)
+      let roundedTotal = Math.round(total)
+
+      if (roundedTotal.toFixed(2) == total) {
+        return Nova.formatNumber(new String(roundedTotal))
       }
 
-      return singularOrPlural(this.value, this.suffix)
+      return Nova.formatNumber(new String(total))
+    },
+
+    currentTotal() {
+      return sumBy(this.chartData, 'value')
     },
   },
 }

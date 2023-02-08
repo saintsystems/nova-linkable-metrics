@@ -4,7 +4,7 @@ const path = require('path')
 
 class NovaExtension {
   name() {
-    return 'nova-extension'
+    return 'saintsystems/nova-linkable-metrics'
   }
 
   register(name) {
@@ -17,6 +17,24 @@ class NovaExtension {
         vue: 'Vue',
         'laravel-nova': 'LaravelNova'
     }
+
+    // webpackConfig.resolve.alias = {
+    //     vue: '@vue/compat'
+    // }
+
+    // webpackConfig.module.rules = [
+    //     {
+    //       test: /\.vue$/,
+    //       loader: 'vue-loader',
+    //       options: {
+    //         compilerOptions: {
+    //           compatConfig: {
+    //             MODE: 2
+    //           }
+    //         }
+    //       }
+    //     }
+    //   ]
 
     // webpackConfig.resolve.alias = {
     //   ...(webpackConfig.resolve.alias || {}),

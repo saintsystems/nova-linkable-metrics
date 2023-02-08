@@ -24,11 +24,17 @@
   <script>
   import { minimum } from '../util'
   import { InteractsWithDates, MetricBehavior } from 'laravel-nova'
-
+  import BaseValueMetric from './Base/BaseValueMetric'
+  // import { BaseValueMetric } from 'laravel-nova'
   export default {
-    name: 'ValueMetric',
 
-    mixins: [InteractsWithDates, MetricBehavior],
+    name: 'LinkableValueMetric',
+
+    components: [
+        BaseValueMetric
+    ],
+
+    // mixins: [InteractsWithDates, MetricBehavior],
 
     props: {
       card: {
@@ -94,6 +100,10 @@
     },
 
     methods: {
+      navigateToMetricLink(e) {
+        Nova.visit(this.link)
+      },
+
       handleRangeSelected(key) {
         this.selectedRangeKey = key
         this.fetch()
@@ -134,6 +144,11 @@
     },
 
     computed: {
+
+      link() {
+          return this.card.url;
+      },
+
       hasRanges() {
         return this.card.ranges.length > 0
       },

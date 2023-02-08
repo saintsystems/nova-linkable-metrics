@@ -107,10 +107,11 @@
   </template>
 
   <script>
-  import { increaseOrDecrease, singularOrPlural, CopiesToClipboard } from 'laravel-nova'
+  import { increaseOrDecrease, singularOrPlural } from 'laravel-nova'
+  import { CopiesToClipboard } from 'laravel-nova'
 
   export default {
-    name: 'BaseValueMetric',
+    name: 'BaseLinkableValueMetric',
 
     mixins: [CopiesToClipboard],
 
@@ -158,7 +159,7 @@
       },
 
       navigateToMetricLink(e) {
-        Inertia.visit(this.link)
+        Nova.visit(this.link)
       },
     },
 
