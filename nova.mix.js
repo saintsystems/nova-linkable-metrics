@@ -12,9 +12,6 @@ class NovaExtension {
   }
 
   webpackConfig(webpackConfig) {
-    webpackConfig.externals = {
-      vue: 'Vue',
-    }
 
     webpackConfig.externals = {
         vue: 'Vue',
