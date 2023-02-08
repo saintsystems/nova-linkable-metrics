@@ -157,14 +157,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../util */ "./resources/js/util/index.js");
 /* harmony import */ var laravel_nova__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! laravel-nova */ "laravel-nova");
 /* harmony import */ var laravel_nova__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(laravel_nova__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _Base_BaseValueMetric__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Base/BaseValueMetric */ "./resources/js/components/Base/BaseValueMetric.vue");
 
 
-
+// import BaseLinkableValueMetric from './Base/BaseValueMetric'
 // import { BaseValueMetric } from 'laravel-nova'
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'LinkableValueMetric',
-  components: [_Base_BaseValueMetric__WEBPACK_IMPORTED_MODULE_2__["default"]],
+  // components: [
+  //   BaseLinkableValueMetric
+  // ],
+
   // mixins: [InteractsWithDates, MetricBehavior],
 
   props: {
@@ -382,9 +384,10 @@ var _hoisted_19 = {
   key: 2
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _this = this;
   var _component_HelpTextTooltip = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("HelpTextTooltip");
-  var _component_SelectControl = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("SelectControl");
   var _component_Icon = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Icon");
+  var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
   var _component_LoadingCard = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("LoadingCard");
   var _directive_tooltip = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDirective)("tooltip");
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_LoadingCard, {
@@ -395,14 +398,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_2, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.title), 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_HelpTextTooltip, {
         text: $props.helpText,
         width: $props.helpWidth
-      }, null, 8 /* PROPS */, ["text", "width"]), $props.ranges.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_SelectControl, {
-        key: 0,
-        "class": "ml-auto w-[6rem] flex-shrink-0",
-        size: "xxs",
-        options: $props.ranges,
-        onChange: $options.handleChange,
-        "aria-label": _ctx.__('Select Ranges')
-      }, null, 8 /* PROPS */, ["options", "onChange", "aria-label"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [$props.icon ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Icon, {
+      }, null, 8 /* PROPS */, ["text", "width"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <SelectControl\n          v-if=\"ranges.length > 0\"\n          class=\"ml-auto w-[6rem] flex-shrink-0\"\n          size=\"xxs\"\n          :options=\"ranges\"\n          v-model:selected=\"selectedRangeKey\"\n          @change=\"handleChange\"\n          :aria-label=\"__('Select Ranges')\"\n        /> ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [$props.icon ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Icon, {
         type: $props.icon,
         width: "24",
         height: "24"
@@ -412,11 +408,16 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         rounded: false
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
-            onClick: _cache[0] || (_cache[0] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
-              return $options.navigateToMetricLink && $options.navigateToMetricLink.apply($options, arguments);
-            }, ["stop", "prevent"]))
-          }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedValue), 1 /* TEXT */)])), [[_directive_tooltip, "".concat($options.tooltipFormattedValue)]])]), $props.suffix ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedSuffix), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" <a @click.stop.prevent=\"navigateToMetricLink\"> "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+            href: _this.url,
+            title: $props.title,
+            "class": "link-default font-normal"
+          }, {
+            "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+              return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedValue), 1 /* TEXT */)])), [[_directive_tooltip, "".concat($options.tooltipFormattedValue)]])];
+            }),
+            _: 1 /* STABLE */
+          }, 8 /* PROPS */, ["href", "title"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" </a> "), $props.suffix ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_5, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedSuffix), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)];
         }),
         _: 1 /* STABLE */
       }, 8 /* PROPS */, ["onClick"])), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_6, [$options.increaseOrDecreaseLabel == 'Decrease' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", _hoisted_7, _hoisted_9)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.increaseOrDecreaseLabel == 'Increase' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("svg", _hoisted_10, _hoisted_12)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $options.increaseOrDecrease != 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_13, [$options.growthPercentage !== 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_14, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.growthPercentage) + "% " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__($options.increaseOrDecreaseLabel)), 1 /* TEXT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_15, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('No Increase')), 1 /* TEXT */))])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_16, [$props.previous == '0' && $props.value != '0' ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_17, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('No Prior Data')), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.value == '0' && $props.previous != '0' && !$props.zeroResult ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_18, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('No Current Data')), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $props.value == '0' && $props.previous == '0' && !$props.zeroResult ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('No Data')), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]))])])])])];
@@ -442,8 +443,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _component_BaseValueMetric = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("BaseValueMetric");
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_BaseValueMetric, {
+  var _component_BaseLinkableValueMetric = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("BaseLinkableValueMetric");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_BaseLinkableValueMetric, {
     onSelected: $options.handleRangeSelected,
     title: $props.card.name,
     copyable: _ctx.copyable,
@@ -479,11 +480,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_camelCase__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_camelCase__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var lodash_upperFirst__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/upperFirst */ "./node_modules/lodash/upperFirst.js");
 /* harmony import */ var lodash_upperFirst__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_upperFirst__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_LinkableValueMetric__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/LinkableValueMetric */ "./resources/js/components/LinkableValueMetric.vue");
+/* harmony import */ var _components_Base_BaseValueMetric__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Base/BaseValueMetric */ "./resources/js/components/Base/BaseValueMetric.vue");
+/* harmony import */ var _components_LinkableValueMetric__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/LinkableValueMetric */ "./resources/js/components/LinkableValueMetric.vue");
 
 
 
-// import BaseValueMetric from './components/Base/BaseValueMetric'
 // import LinkableValueMetric from './components/LinkableValueMetric'
 
 // import LinkableTrendMetric from './components/LinkableTrendMetric'
@@ -511,8 +512,8 @@ Nova.booting(function (app, store) {
   //   //app.component(componentName, componentConfig.default || componentConfig)
   // })
 
-  // app.component('BaseValueMetric', BaseValueMetric)
-  app.component('linkable-value-metric', _components_LinkableValueMetric__WEBPACK_IMPORTED_MODULE_2__["default"]);
+  app.component('BaseLinkableValueMetric', _components_Base_BaseValueMetric__WEBPACK_IMPORTED_MODULE_2__["default"]);
+  app.component('linkable-value-metric', _components_LinkableValueMetric__WEBPACK_IMPORTED_MODULE_3__["default"]);
   // app.component('linkable-trend-metric', LinkableTrendMetric)
   // app.component('linkable-partition-metric', LinkablePartitionMetric)
 });

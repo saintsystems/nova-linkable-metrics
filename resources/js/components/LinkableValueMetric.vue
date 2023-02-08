@@ -1,5 +1,5 @@
 <template>
-    <BaseValueMetric
+    <BaseLinkableValueMetric
       @selected="handleRangeSelected"
       :title="card.name"
       :copyable="copyable"
@@ -24,15 +24,15 @@
   <script>
   import { minimum } from '../util'
   import { InteractsWithDates, MetricBehavior } from 'laravel-nova'
-  import BaseValueMetric from './Base/BaseValueMetric'
+  // import BaseLinkableValueMetric from './Base/BaseValueMetric'
   // import { BaseValueMetric } from 'laravel-nova'
   export default {
 
     name: 'LinkableValueMetric',
 
-    components: [
-        BaseValueMetric
-    ],
+    // components: [
+    //   BaseLinkableValueMetric
+    // ],
 
     // mixins: [InteractsWithDates, MetricBehavior],
 

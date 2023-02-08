@@ -1,5 +1,5 @@
 {
-    "/card.js": "/card.js?id=7c867e138ef5bad0db0109a200f78679",
-    "/manifest.js": "/manifest.js?id=09e7ba655840ddf0f0fe7ff69311b774",
-    "/vendor.js": "/vendor.js?id=f278e5e7ac89bc0d53982764bef16db9"
+    "/dist/card.js": "/dist/card.js",
+    "/dist/manifest.js": "/dist/manifest.js",
+    "/dist/vendor.js": "/dist/vendor.js"
 }

@@ -5,7 +5,7 @@
 
         <HelpTextTooltip :text="helpText" :width="helpWidth" />
 
-        <SelectControl
+        <!-- <SelectControl
           v-if="ranges.length > 0"
           class="ml-auto w-[6rem] flex-shrink-0"
           size="xxs"
@@ -13,7 +13,7 @@
           v-model:selected="selectedRangeKey"
           @change="handleChange"
           :aria-label="__('Select Ranges')"
-        />
+        /> -->
       </div>
 
       <div class="flex items-center mb-4 space-x-4">
@@ -31,11 +31,13 @@
             class="flex items-center text-4xl"
             :rounded="false"
           >
-            <a @click.stop.prevent="navigateToMetricLink">
-              <span v-tooltip="`${tooltipFormattedValue}`">
-              {{ formattedValue }}
-              </span>
-            </a>
+            <!-- <a @click.stop.prevent="navigateToMetricLink"> -->
+              <Link :href="this.url" :title="title" class="link-default font-normal">
+                <span v-tooltip="`${tooltipFormattedValue}`">
+                {{ formattedValue }}
+                </span>
+              </Link>
+            <!-- </a> -->
             <span v-if="suffix" class="ml-2 text-sm font-bold">
               {{ formattedSuffix }}
             </span>

@@ -14,16 +14,16 @@ trait Linkable
     }
 
     /**
-     * Set a link to a route
+     * Set a link to a named route
+     *
+     * @param  array|string  $name
+     * @param  mixed  $parameters
+     * @param  bool  $absolute
+     * @return string
      */
-    public function route($routeName, array $params = [], array $query = [])
+    public function route($name, $parameters = [], $absolute = true)
     {
-        $route = [
-            'name' => $routeName,
-            'params' => $params,
-            'query' => $query
-        ];
-        return $this->url(json_encode($route));
+        return $this->url(route($name, $parameters, $absolute));
     }
 
     /**
