@@ -40,11 +40,11 @@ trait LinkableResult
     }
 
     /**
-     * Prepare the metric for JSON serialization.
+     * Prepare the metric result for JSON serialization.
      *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return array_merge(parent::jsonSerialize(), [
             'url' => $this->url,
