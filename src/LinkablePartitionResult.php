@@ -83,10 +83,5 @@ class LinkablePartitionResult extends PartitionResult
             })->values()->all(),
             'url' => $this->url,
         ];
-
-        // return array_merge(parent::jsonSerialize(), [
-        //     'url' => $this->url,
-        //     'partitionLinks' => $this->links,
-        // ]);
     }
 }

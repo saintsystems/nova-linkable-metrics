@@ -83,7 +83,6 @@ export default {
     helpText: {},
     helpWidth: {},
     chartData: Array,
-    partitionLinks: Array,
     url: '',
   },
 

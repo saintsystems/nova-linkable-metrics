@@ -37,7 +37,6 @@ var colorForIndex = function colorForIndex(index) {
     helpText: {},
     helpWidth: {},
     chartData: Array,
-    partitionLinks: Array,
     url: ''
   },
   data: function data() {
@@ -529,8 +528,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       loading: true,
-      chartData: [],
-      partitionLinks: []
+      chartData: []
     };
   },
   watch: {
@@ -556,11 +554,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
       this.loading = true;
       (0,_util__WEBPACK_IMPORTED_MODULE_1__.minimum)(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(function (_ref) {
-        var _ref$data$value = _ref.data.value,
-          value = _ref$data$value.value,
-          partitionLinks = _ref$data$value.partitionLinks;
+        var value = _ref.data.value.value;
         _this.chartData = value;
-        _this.partitionLinks = partitionLinks;
         _this.loading = false;
       });
     }
@@ -1208,10 +1203,9 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "help-text": $props.card.helpText,
     "help-width": $props.card.helpWidth,
     "chart-data": _ctx.chartData,
-    "partition-links": _ctx.partitionLinks,
     loading: _ctx.loading,
     url: this.card.url
-  }, null, 8 /* PROPS */, ["title", "help-text", "help-width", "chart-data", "partition-links", "loading", "url"]);
+  }, null, 8 /* PROPS */, ["title", "help-text", "help-width", "chart-data", "loading", "url"]);
 }
 
 /***/ }),

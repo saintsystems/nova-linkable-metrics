@@ -4,7 +4,6 @@
       :help-text="card.helpText"
       :help-width="card.helpWidth"
       :chart-data="chartData"
-      :partition-links="partitionLinks"
       :loading="loading"
       :url="this.card.url"
     />
@@ -44,7 +43,6 @@
     data: () => ({
       loading: true,
       chartData: [],
-      partitionLinks: [],
     }),
 
     watch: {
@@ -76,11 +74,10 @@
         minimum(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(
           ({
             data: {
-              value: { value, partitionLinks },
+              value: { value },
             },
           }) => {
             this.chartData = value
-            this.partitionLinks = partitionLinks
             this.loading = false
           }
         )
