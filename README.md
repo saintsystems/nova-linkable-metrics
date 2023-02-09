@@ -55,17 +55,17 @@ You can define metric links using the `route` method from the `Linkable` trait i
 **Index Route**
 
 ```php
-    // NovaServiceProvider.php
+    // App\Nova\Dashboards\Main.php
 
     /**
-     * Get the cards that should be displayed on the Nova dashboard.
+     * Get the cards for the dashboard.
      *
      * @return array
      */
     protected function cards()
     {
         return [
-            (new JobsInProgress)->width('1/3')->route('index', ['resourceName' => 'jobs']),
+            (new TotalUsers)->width('1/3')->route('nova.pages.index', ['resource' => 'users']),
         ];
     }
 ```
@@ -73,17 +73,17 @@ You can define metric links using the `route` method from the `Linkable` trait i
 **OR using a Lens Route**
 
 ```php
-    // NovaServiceProvider.php
+    // App\Nova\Dashboards\Main.php
 
     /**
-     * Get the cards that should be displayed on the Nova dashboard.
+     * Get the cards for the dashboard.
      *
      * @return array
      */
     protected function cards()
     {
         return [
-            (new JobsInProgress)->width('1/3')->route('lens', ['resourceName' => 'jobs', 'lens' => 'all-jobs']),
+            (new TotalUsers)->width('1/3')->route('nova.pages.lens', ['resource' => 'users', 'lens' => 'active-users']),
         ];
     }
 ```
@@ -91,24 +91,24 @@ You can define metric links using the `route` method from the `Linkable` trait i
 **OR using a Filter Route**
 
 ```php
-    // NovaServiceProvider.php
+    // App\Nova\Dashboards\Main.php
 
     /**
-     * Get the cards that should be displayed on the Nova dashboard.
+     * Get the cards for the dashboard.
      *
      * @return array
      */
     protected function cards()
     {
-        $filters = base64_encode(json_encode([
+        $filter = base64_encode(json_encode([
             [
-                'class' => JobStatus::class,
+                'class' => UserStatus::class,
                 'value' => 'active',
             ],
         ]));
 
         return [
-            (new JobsInProgress)->width('1/3')->route('lens', ['resourceName' => 'jobs'], ['jobs_filter' => $filters]),
+            (new JobsInProgress)->width('1/3')->route('nova.pages.index', ['resource' => 'users', 'users_filter' => $filter]),
         ];
     }
 ```
@@ -116,7 +116,7 @@ You can define metric links using the `route` method from the `Linkable` trait i
 2. Or, within the card itself (useful for cards only available on detail screens where you might want to filter the url based on the current resource):
 
 ```php
-    // In your linktable Nova metric class
+    // In your linkable Nova metric class
 
     /**
      * Calculate the value of the metric.
@@ -127,14 +127,14 @@ You can define metric links using the `route` method from the `Linkable` trait i
     public function calculate(Request $request, UnitOfMeasure $unitOfMeasure)
     {
         $result = $this->result($unitOfMeasure->items()->count());
-        $params = ['resourceName' => 'items'];
-        $query = [
+        $params = [
+            'resource' => 'items',
             'viaResource' => $request->resource,
             'viaResourceId' => $unitOfMeasure->id,
             'viaRelationship' => 'items',
             'relationshipType' => 'hasMany',
         ];
-        return $result->route('index', $params, $query);
+        return $result->route('nova.pages.index', $params);
     }
 ```
 
