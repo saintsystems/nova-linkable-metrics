@@ -1,5 +1,5 @@
 <template>
-    <BaseTrendMetric
+    <component :is="this.card.url ? 'BaseLinkableTrendMetric' : 'BaseTrendMetric'"
       @selected="handleRangeSelected"
       :title="card.name"
       :help-text="card.helpText"
@@ -13,18 +13,19 @@
       :suffix-inflection="suffixInflection"
       :selected-range-key="selectedRangeKey"
       :loading="loading"
+      :url="this.card.url"
     />
   </template>
 
   <script>
   import map from 'lodash/map'
-  import { InteractsWithDates, MetricBehavior } from 'laravel-nova'
+  import { InteractsWithDates, MetricBehavior } from 'laravel-nova' //'@/mixins'
   import { minimum } from '../util'
 
   export default {
-    name: 'TrendMetric',
+    name: 'LinkableTrendMetric',
 
-    mixins: [InteractsWithDates, MetricBehavior],
+    // mixins: [InteractsWithDates, MetricBehavior],
 
     props: {
       card: {

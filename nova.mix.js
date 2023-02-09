@@ -15,7 +15,8 @@ class NovaExtension {
 
     webpackConfig.externals = {
         vue: 'Vue',
-        'laravel-nova': 'LaravelNova'
+        'laravel-nova': 'LaravelNova',
+        '@/mixins': 'LaravelNova'
     }
 
     // webpackConfig.resolve.alias = {

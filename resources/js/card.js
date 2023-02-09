@@ -1,10 +1,11 @@
 import camelCase from 'lodash/camelCase'
 import upperFirst from 'lodash/upperFirst'
 
-import BaseValueMetric from './components/Base/BaseValueMetric'
-// import LinkableValueMetric from './components/LinkableValueMetric'
+import BaseLinkableValueMetric from './components/Base/BaseValueMetric'
+import BaseLinkableTrendMetric from './components/Base/BaseTrendMetric'
+
 import LinkableValueMetric from './components/LinkableValueMetric'
-// import LinkableTrendMetric from './components/LinkableTrendMetric'
+import LinkableTrendMetric from './components/LinkableTrendMetric'
 // import LinkablePartitionMetric from './components/LinkablePartitionMetric'
 
 Nova.booting((app, store) => {
@@ -29,8 +30,9 @@ Nova.booting((app, store) => {
   //   //app.component(componentName, componentConfig.default || componentConfig)
   // })
 
-  app.component('BaseLinkableValueMetric', BaseValueMetric)
+  app.component('BaseLinkableValueMetric', BaseLinkableValueMetric)
+  app.component('BaseLinkableTrendMetric', BaseLinkableTrendMetric)
   app.component('linkable-value-metric', LinkableValueMetric)
-  // app.component('linkable-trend-metric', LinkableTrendMetric)
+  app.component('linkable-trend-metric', LinkableTrendMetric)
   // app.component('linkable-partition-metric', LinkablePartitionMetric)
 })

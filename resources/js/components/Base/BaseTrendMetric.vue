@@ -5,7 +5,7 @@
 
         <HelpTextTooltip :text="helpText" :width="helpWidth" />
 
-        <!-- <SelectControl
+        <SelectControl
           v-if="ranges.length > 0"
           class="ml-auto w-[6rem] flex-shrink-0"
           size="xxs"
@@ -13,11 +13,13 @@
           v-model:selected="selectedRangeKey"
           @change="handleChange"
           :aria-label="__('Select Ranges')"
-        /> -->
+        />
       </div>
 
       <p class="flex items-center text-4xl mb-4">
-        {{ formattedValue }}
+        <Link :href="this.url" :title="title" class="link-default font-normal">
+          {{ formattedValue }}
+        </Link>
         <span v-if="suffix" class="ml-2 text-sm font-bold">{{
           formattedSuffix
         }}</span>
@@ -35,7 +37,7 @@
   import debounce from 'lodash/debounce'
   import Chartist from 'chartist'
   import 'chartist/dist/chartist.min.css'
-  import { singularOrPlural } from 'laravel-nova'
+  import { singularOrPlural } from '@/mixins'//'laravel-nova'
   import ChartistTooltip from 'chartist-plugin-tooltips-updated'
   import 'chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.css'
 
@@ -50,6 +52,7 @@
       helpText: {},
       helpWidth: {},
       value: {},
+      url: '',
       chartData: {},
       maxWidth: {},
       prefix: '',
