@@ -213,7 +213,7 @@ You can define metric links using the `route` method from the `Linkable` trait i
     }
 ```
 
-**Customizing Partition Links**
+## Customizing Partition Links
 
 By default, Partition metrics can have links just like Value and Trend metrics. However, using the default `route` method like on Value and Trend metrics (as shown above) will simply link the PartitionMetric card title to the provided route/url.
 
