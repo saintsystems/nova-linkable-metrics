@@ -217,7 +217,7 @@ You can define metric links using the `route` method from the `Linkable` trait i
 
 By default, Partition metrics can have links just like Value and Trend metrics. However, using the default `route` method like on Value and Trend metrics (as shown above) will simply link the PartitionMetric card title to the provided route/url.
 
-For greater customization, you may pass a Closure to the new `link` method on the LinkablePartitionResult class that allows you to customize the link for each individual partition in the generated chart, and even pass partition information to the route like below:
+For greater customization, just like [Customizing Partition Labels](https://nova.laravel.com/docs/4.0/metrics/defining-metrics.html#customizing-partition-labels), you may pass a Closure to the new `link` method on the LinkablePartitionResult class that allows you to customize the link for each individual partition in the generated chart, and even pass partition information to the route like below:
 
 ```php
     // App\Nova\Metrics\UsersByStatus
