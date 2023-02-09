@@ -108,7 +108,7 @@ You can define metric links using the `route` method from the `Linkable` trait i
         ]));
 
         return [
-            (new JobsInProgress)->width('1/3')->route('nova.pages.index', ['resource' => 'users', 'users_filter' => $filter]),
+            (new TotalUsers)->width('1/3')->route('nova.pages.index', ['resource' => 'users', 'users_filter' => $filter]),
         ];
     }
 ```
