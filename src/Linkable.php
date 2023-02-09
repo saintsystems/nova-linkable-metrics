@@ -21,7 +21,7 @@ trait Linkable
      * @param  bool  $absolute
      * @return string
      */
-    public function route($name, $parameters = [], $absolute = true)
+    public function route($name, $parameters = [], $absolute = false)
     {
         return $this->url(route($name, $parameters, $absolute));
     }
