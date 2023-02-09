@@ -31,7 +31,7 @@
             class="flex items-center text-4xl"
             :rounded="false"
           >
-            <Link :href="this.url" :title="title" class="link-default font-normal">
+            <Link :href="this.url" :title="title" class="link-default">
               <span v-tooltip="`${tooltipFormattedValue}`">
               {{ formattedValue }}
               </span>
@@ -107,8 +107,8 @@
   </template>
 
   <script>
-  import { increaseOrDecrease, singularOrPlural } from 'laravel-nova'
-  import { CopiesToClipboard } from 'laravel-nova'
+  import { increaseOrDecrease, singularOrPlural } from '@/util'
+  import { CopiesToClipboard } from '@/mixins'
 
   export default {
     name: 'BaseLinkableValueMetric',

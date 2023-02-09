@@ -19,8 +19,8 @@
 
   <script>
   import map from 'lodash/map'
-  import { InteractsWithDates, MetricBehavior } from 'laravel-nova' //'@/mixins'
-  import { minimum } from '../util'
+  import { InteractsWithDates, MetricBehavior } from '@/mixins'
+  import { minimum } from '@/util'
 
   export default {
     name: 'LinkableTrendMetric',

@@ -17,7 +17,7 @@
       </div>
 
       <p class="flex items-center text-4xl mb-4">
-        <Link :href="this.url" :title="title" class="link-default font-normal">
+        <Link :href="this.url" :title="title" class="link-defaultd">
           {{ formattedValue }}
         </Link>
         <span v-if="suffix" class="ml-2 text-sm font-bold">{{
@@ -37,7 +37,7 @@
   import debounce from 'lodash/debounce'
   import Chartist from 'chartist'
   import 'chartist/dist/chartist.min.css'
-  import { singularOrPlural } from '@/mixins'//'laravel-nova'
+  import { singularOrPlural } from '@/mixins'
   import ChartistTooltip from 'chartist-plugin-tooltips-updated'
   import 'chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.css'
 

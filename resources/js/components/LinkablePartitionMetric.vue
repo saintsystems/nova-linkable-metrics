@@ -1,18 +1,22 @@
 <template>
-    <BasePartitionMetric
+    <component :is="this.card.url ? 'BaseLinkablePartitionMetric' : 'BasePartitionMetric'"
       :title="card.name"
       :help-text="card.helpText"
       :help-width="card.helpWidth"
       :chart-data="chartData"
+      :partition-links="partitionLinks"
       :loading="loading"
+      :url="this.card.url"
     />
   </template>
 
   <script>
-  import { MetricBehavior } from 'laravel-nova'
-  import { minimum } from '../util'
+  import { MetricBehavior } from '@/mixins'
+  import { minimum } from '@/util'
 
   export default {
+    name: 'LinkablePartitionMetric',
+
     mixins: [MetricBehavior],
 
     props: {
@@ -40,6 +44,7 @@
     data: () => ({
       loading: true,
       chartData: [],
+      partitionLinks: [],
     }),
 
     watch: {
@@ -71,10 +76,11 @@
         minimum(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(
           ({
             data: {
-              value: { value },
+              value: { value, partitionLinks },
             },
           }) => {
             this.chartData = value
+            this.partitionLinks = partitionLinks
             this.loading = false
           }
         )

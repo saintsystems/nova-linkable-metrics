@@ -1,6 +1,148 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BasePartitionMetric.vue?vue&type=script&lang=js":
+/*!******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BasePartitionMetric.vue?vue&type=script&lang=js ***!
+  \******************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/debounce */ "./node_modules/lodash/debounce.js");
+/* harmony import */ var lodash_debounce__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_debounce__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var lodash_map__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/map */ "./node_modules/lodash/map.js");
+/* harmony import */ var lodash_map__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_map__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var lodash_sumBy__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash/sumBy */ "./node_modules/lodash/sumBy.js");
+/* harmony import */ var lodash_sumBy__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash_sumBy__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var chartist__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! chartist */ "./node_modules/chartist/dist/chartist.js");
+/* harmony import */ var chartist__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(chartist__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var chartist_dist_chartist_min_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! chartist/dist/chartist.min.css */ "./node_modules/chartist/dist/chartist.min.css");
+
+
+
+
+
+var colorForIndex = function colorForIndex(index) {
+  return ['#F5573B', '#F99037', '#F2CB22', '#8FC15D', '#098F56', '#47C1BF', '#1693EB', '#6474D7', '#9C6ADE', '#E471DE'][index];
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'BasePartitionMetric',
+  props: {
+    loading: Boolean,
+    title: String,
+    helpText: {},
+    helpWidth: {},
+    chartData: Array,
+    partitionLinks: Array,
+    url: ''
+  },
+  data: function data() {
+    return {
+      chartist: null,
+      resizeObserver: null
+    };
+  },
+  watch: {
+    chartData: function chartData(newData, oldData) {
+      this.renderChart();
+    }
+  },
+  created: function created() {
+    var _this = this;
+    var debouncer = lodash_debounce__WEBPACK_IMPORTED_MODULE_0___default()(function (callback) {
+      return callback();
+    }, Nova.config('debounce'));
+    this.resizeObserver = new ResizeObserver(function (entries) {
+      debouncer(function () {
+        _this.renderChart();
+      });
+    });
+  },
+  mounted: function mounted() {
+    this.chartist = new (chartist__WEBPACK_IMPORTED_MODULE_3___default().Pie)(this.$refs.chart, this.formattedChartData, {
+      donut: true,
+      donutWidth: 10,
+      donutSolid: true,
+      startAngle: 270,
+      showLabel: false
+    });
+    this.chartist.on('draw', function (context) {
+      if (context.type === 'slice') {
+        context.element.attr({
+          style: "fill: ".concat(context.meta.color, " !important")
+        });
+      }
+    });
+    this.resizeObserver.observe(this.$refs.chart);
+  },
+  beforeUnmount: function beforeUnmount() {
+    this.resizeObserver.unobserve(this.$refs.chart);
+  },
+  methods: {
+    renderChart: function renderChart() {
+      this.chartist.update(this.formattedChartData);
+    },
+    getItemColor: function getItemColor(item, index) {
+      return typeof item.color === 'string' ? item.color : colorForIndex(index);
+    }
+  },
+  computed: {
+    chartClasses: function chartClasses() {
+      return ['vertical-center', 'rounded-b-lg', 'ct-chart', 'mr-4', this.currentTotal <= 0 ? 'invisible' : ''];
+    },
+    formattedChartData: function formattedChartData() {
+      return {
+        labels: this.formattedLabels,
+        series: this.formattedData
+      };
+    },
+    formattedItems: function formattedItems() {
+      var _this2 = this;
+      return lodash_map__WEBPACK_IMPORTED_MODULE_1___default()(this.chartData, function (item, index) {
+        return {
+          label: item.label,
+          value: Nova.formatNumber(item.value),
+          color: _this2.getItemColor(item, index),
+          percentage: Nova.formatNumber(String(item.percentage))
+        };
+      });
+    },
+    formattedLabels: function formattedLabels() {
+      return lodash_map__WEBPACK_IMPORTED_MODULE_1___default()(this.chartData, function (item) {
+        return item.label;
+      });
+    },
+    formattedData: function formattedData() {
+      var _this3 = this;
+      return lodash_map__WEBPACK_IMPORTED_MODULE_1___default()(this.chartData, function (item, index) {
+        return {
+          value: item.value,
+          meta: {
+            color: _this3.getItemColor(item, index)
+          }
+        };
+      });
+    },
+    formattedTotal: function formattedTotal() {
+      var total = this.currentTotal.toFixed(2);
+      var roundedTotal = Math.round(total);
+      if (roundedTotal.toFixed(2) == total) {
+        return Nova.formatNumber(new String(roundedTotal));
+      }
+      return Nova.formatNumber(new String(total));
+    },
+    currentTotal: function currentTotal() {
+      return lodash_sumBy__WEBPACK_IMPORTED_MODULE_2___default()(this.chartData, 'value');
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BaseTrendMetric.vue?vue&type=script&lang=js":
 /*!**************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BaseTrendMetric.vue?vue&type=script&lang=js ***!
@@ -31,7 +173,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
- //'laravel-nova'
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -217,13 +359,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var laravel_nova__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-nova */ "laravel-nova");
-/* harmony import */ var laravel_nova__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(laravel_nova__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/util */ "./resources/js/util/index.js");
+/* harmony import */ var _mixins__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/mixins */ "laravel-nova");
+/* harmony import */ var _mixins__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_mixins__WEBPACK_IMPORTED_MODULE_1__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'BaseLinkableValueMetric',
-  mixins: [laravel_nova__WEBPACK_IMPORTED_MODULE_0__.CopiesToClipboard],
+  mixins: [_mixins__WEBPACK_IMPORTED_MODULE_1__.CopiesToClipboard],
   emits: ['selected'],
   props: {
     loading: {
@@ -294,7 +437,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     increaseOrDecrease: function increaseOrDecrease() {
       if (this.previous == 0 || this.previous == null || this.value == 0) return 0;
-      return (0,laravel_nova__WEBPACK_IMPORTED_MODULE_0__.increaseOrDecrease)(this.value, this.previous).toFixed(2);
+      return (0,_util__WEBPACK_IMPORTED_MODULE_0__.increaseOrDecrease)(this.value, this.previous).toFixed(2);
     },
     increaseOrDecreaseLabel: function increaseOrDecreaseLabel() {
       switch (Math.sign(this.increaseOrDecrease)) {
@@ -335,7 +478,108 @@ __webpack_require__.r(__webpack_exports__);
       if (this.suffixInflection === false) {
         return this.suffix;
       }
-      return (0,laravel_nova__WEBPACK_IMPORTED_MODULE_0__.singularOrPlural)(this.value, this.suffix);
+      return (0,_util__WEBPACK_IMPORTED_MODULE_0__.singularOrPlural)(this.value, this.suffix);
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/LinkablePartitionMetric.vue?vue&type=script&lang=js":
+/*!*****************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/LinkablePartitionMetric.vue?vue&type=script&lang=js ***!
+  \*****************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _mixins__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/mixins */ "laravel-nova");
+/* harmony import */ var _mixins__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_mixins__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/util */ "./resources/js/util/index.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  name: 'LinkablePartitionMetric',
+  mixins: [_mixins__WEBPACK_IMPORTED_MODULE_0__.MetricBehavior],
+  props: {
+    card: {
+      type: Object,
+      required: true
+    },
+    resourceName: {
+      type: String,
+      "default": ''
+    },
+    resourceId: {
+      type: [Number, String],
+      "default": ''
+    },
+    lens: {
+      type: String,
+      "default": ''
+    }
+  },
+  data: function data() {
+    return {
+      loading: true,
+      chartData: [],
+      partitionLinks: []
+    };
+  },
+  watch: {
+    resourceId: function resourceId() {
+      this.fetch();
+    }
+  },
+  created: function created() {
+    this.fetch();
+  },
+  mounted: function mounted() {
+    if (this.card && this.card.refreshWhenFiltersChange === true) {
+      Nova.$on('filter-changed', this.fetch);
+    }
+  },
+  beforeUnmount: function beforeUnmount() {
+    if (this.card && this.card.refreshWhenFiltersChange === true) {
+      Nova.$off('filter-changed', this.fetch);
+    }
+  },
+  methods: {
+    fetch: function fetch() {
+      var _this = this;
+      this.loading = true;
+      (0,_util__WEBPACK_IMPORTED_MODULE_1__.minimum)(Nova.request().get(this.metricEndpoint, this.metricPayload)).then(function (_ref) {
+        var _ref$data$value = _ref.data.value,
+          value = _ref$data$value.value,
+          partitionLinks = _ref$data$value.partitionLinks;
+        _this.chartData = value;
+        _this.partitionLinks = partitionLinks;
+        _this.loading = false;
+      });
+    }
+  },
+  computed: {
+    metricEndpoint: function metricEndpoint() {
+      var lens = this.lens !== '' ? "/lens/".concat(this.lens) : '';
+      if (this.resourceName && this.resourceId) {
+        return "/nova-api/".concat(this.resourceName).concat(lens, "/").concat(this.resourceId, "/metrics/").concat(this.card.uriKey);
+      } else if (this.resourceName) {
+        return "/nova-api/".concat(this.resourceName).concat(lens, "/metrics/").concat(this.card.uriKey);
+      } else {
+        return "/nova-api/metrics/".concat(this.card.uriKey);
+      }
+    },
+    metricPayload: function metricPayload() {
+      var payload = {
+        params: {}
+      };
+      if (!Nova.missingResource(this.resourceName) && this.card && this.card.refreshWhenFiltersChange === true) {
+        payload.params.filter = this.$store.getters["".concat(this.resourceName, "/currentEncodedFilters")];
+      }
+      return payload;
     }
   }
 });
@@ -355,11 +599,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lodash_map__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/map */ "./node_modules/lodash/map.js");
 /* harmony import */ var lodash_map__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_map__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var laravel_nova__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! laravel-nova */ "laravel-nova");
-/* harmony import */ var laravel_nova__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(laravel_nova__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../util */ "./resources/js/util/index.js");
+/* harmony import */ var _mixins__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/mixins */ "laravel-nova");
+/* harmony import */ var _mixins__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_mixins__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/util */ "./resources/js/util/index.js");
 
- //'@/mixins'
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'LinkableTrendMetric',
@@ -501,15 +745,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/mixins */ "laravel-nova");
 /* harmony import */ var _mixins__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_mixins__WEBPACK_IMPORTED_MODULE_1__);
 
- //'laravel-nova'
-// import BaseLinkableValueMetric from './Base/BaseValueMetric'
-// import { BaseValueMetric } from 'laravel-nova'
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'LinkableValueMetric',
-  // components: [
-  //   BaseLinkableValueMetric
-  // ],
-
   // mixins: [InteractsWithDates, MetricBehavior],
 
   props: {
@@ -637,6 +875,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BasePartitionMetric.vue?vue&type=template&id=13c50894":
+/*!**********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BasePartitionMetric.vue?vue&type=template&id=13c50894 ***!
+  \**********************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+var _hoisted_1 = {
+  "class": "h-6 flex mb-3 text-sm font-bold"
+};
+var _hoisted_2 = {
+  "class": "ml-auto font-semibold text-gray-400 text-xs"
+};
+var _hoisted_3 = {
+  "class": "min-h-[90px]"
+};
+var _hoisted_4 = {
+  "class": "overflow-hidden overflow-y-auto max-h-[90px]"
+};
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  var _this = this;
+  var _component_Link = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Link");
+  var _component_HelpTextTooltip = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("HelpTextTooltip");
+  var _component_LoadingCard = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("LoadingCard");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_LoadingCard, {
+    loading: $props.loading,
+    "class": "px-6 py-4"
+  }, {
+    "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+        href: _this.url,
+        title: $props.title,
+        "class": "link-default font-normal"
+      }, {
+        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+          return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.title) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_2, "(" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedTotal) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('total')) + ")", 1 /* TEXT */)];
+        }),
+
+        _: 1 /* STABLE */
+      }, 8 /* PROPS */, ["href", "title"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_HelpTextTooltip, {
+        text: $props.helpText,
+        width: $props.helpWidth
+      }, null, 8 /* PROPS */, ["text", "width"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.formattedItems, function (item) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+          key: item.color,
+          "class": "text-xs leading-normal"
+        }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(item.label in $props.partitionLinks ? 'a' : 'span'), {
+          target: "_blank",
+          href: "".concat(item.label in $props.partitionLinks ? $props.partitionLinks[item.label] : '#'),
+          "class": "link-default font-normal no-underline"
+        }, {
+          "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
+            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
+              "class": "inline-block rounded-full w-2 h-2 mr-2",
+              style: (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeStyle)({
+                backgroundColor: item.color
+              })
+            }, null, 4 /* STYLE */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.label) + " (" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.value) + " - " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(item.percentage) + "%) ", 1 /* TEXT */)];
+          }),
+
+          _: 2 /* DYNAMIC */
+        }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["href"]))]);
+      }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
+        ref: "chart",
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["right-[20px]", $options.chartClasses]),
+        style: {
+          "width": "90px",
+          "height": "90px",
+          "bottom": "30px",
+          "top": "calc(50% + 15px)"
+        }
+      }, null, 2 /* CLASS */)])];
+    }),
+
+    _: 1 /* STABLE */
+  }, 8 /* PROPS */, ["loading"]);
+}
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BaseTrendMetric.vue?vue&type=template&id=a8680eae":
 /*!******************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BaseTrendMetric.vue?vue&type=template&id=a8680eae ***!
@@ -695,7 +1020,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }, null, 8 /* PROPS */, ["options", "onChange", "aria-label"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
         href: _this.url,
         title: $props.title,
-        "class": "link-default font-normal"
+        "class": "link-defaultd"
       }, {
         "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedValue), 1 /* TEXT */)];
@@ -836,7 +1161,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
             href: _this.url,
             title: $props.title,
-            "class": "link-default font-normal"
+            "class": "link-default"
           }, {
             "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
               return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)(((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedValue), 1 /* TEXT */)])), [[_directive_tooltip, "".concat($options.tooltipFormattedValue)]])];
@@ -849,6 +1174,34 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     }),
     _: 1 /* STABLE */
   }, 8 /* PROPS */, ["loading"]);
+}
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/LinkablePartitionMetric.vue?vue&type=template&id=65aa72aa":
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/LinkablePartitionMetric.vue?vue&type=template&id=65aa72aa ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* binding */ render)
+/* harmony export */ });
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "vue");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+
+function render(_ctx, _cache, $props, $setup, $data, $options) {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(this.card.url ? 'BaseLinkablePartitionMetric' : 'BasePartitionMetric'), {
+    title: $props.card.name,
+    "help-text": $props.card.helpText,
+    "help-width": $props.card.helpWidth,
+    "chart-data": _ctx.chartData,
+    "partition-links": _ctx.partitionLinks,
+    loading: _ctx.loading,
+    url: this.card.url
+  }, null, 8 /* PROPS */, ["title", "help-text", "help-width", "chart-data", "partition-links", "loading", "url"]);
 }
 
 /***/ }),
@@ -941,15 +1294,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_upperFirst__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_upperFirst__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_Base_BaseValueMetric__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/Base/BaseValueMetric */ "./resources/js/components/Base/BaseValueMetric.vue");
 /* harmony import */ var _components_Base_BaseTrendMetric__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/Base/BaseTrendMetric */ "./resources/js/components/Base/BaseTrendMetric.vue");
-/* harmony import */ var _components_LinkableValueMetric__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/LinkableValueMetric */ "./resources/js/components/LinkableValueMetric.vue");
-/* harmony import */ var _components_LinkableTrendMetric__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/LinkableTrendMetric */ "./resources/js/components/LinkableTrendMetric.vue");
+/* harmony import */ var _components_Base_BasePartitionMetric__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Base/BasePartitionMetric */ "./resources/js/components/Base/BasePartitionMetric.vue");
+/* harmony import */ var _components_LinkableValueMetric__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/LinkableValueMetric */ "./resources/js/components/LinkableValueMetric.vue");
+/* harmony import */ var _components_LinkableTrendMetric__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/LinkableTrendMetric */ "./resources/js/components/LinkableTrendMetric.vue");
+/* harmony import */ var _components_LinkablePartitionMetric__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/LinkablePartitionMetric */ "./resources/js/components/LinkablePartitionMetric.vue");
 
 
 
 
 
 
-// import LinkablePartitionMetric from './components/LinkablePartitionMetric'
+
 
 Nova.booting(function (app, store) {
   // const requireComponent = require.context(
@@ -975,9 +1330,10 @@ Nova.booting(function (app, store) {
 
   app.component('BaseLinkableValueMetric', _components_Base_BaseValueMetric__WEBPACK_IMPORTED_MODULE_2__["default"]);
   app.component('BaseLinkableTrendMetric', _components_Base_BaseTrendMetric__WEBPACK_IMPORTED_MODULE_3__["default"]);
-  app.component('linkable-value-metric', _components_LinkableValueMetric__WEBPACK_IMPORTED_MODULE_4__["default"]);
-  app.component('linkable-trend-metric', _components_LinkableTrendMetric__WEBPACK_IMPORTED_MODULE_5__["default"]);
-  // app.component('linkable-partition-metric', LinkablePartitionMetric)
+  app.component('BaseLinkablePartitionMetric', _components_Base_BasePartitionMetric__WEBPACK_IMPORTED_MODULE_4__["default"]);
+  app.component('linkable-value-metric', _components_LinkableValueMetric__WEBPACK_IMPORTED_MODULE_5__["default"]);
+  app.component('linkable-trend-metric', _components_LinkableTrendMetric__WEBPACK_IMPORTED_MODULE_6__["default"]);
+  app.component('linkable-partition-metric', _components_LinkablePartitionMetric__WEBPACK_IMPORTED_MODULE_7__["default"]);
 });
 
 /***/ }),
@@ -7448,6 +7804,40 @@ module.exports = baseSlice;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/_baseSum.js":
+/*!*****************************************!*\
+  !*** ./node_modules/lodash/_baseSum.js ***!
+  \*****************************************/
+/***/ ((module) => {
+
+/**
+ * The base implementation of `_.sum` and `_.sumBy` without support for
+ * iteratee shorthands.
+ *
+ * @private
+ * @param {Array} array The array to iterate over.
+ * @param {Function} iteratee The function invoked per iteration.
+ * @returns {number} Returns the sum.
+ */
+function baseSum(array, iteratee) {
+  var result,
+      index = -1,
+      length = array.length;
+
+  while (++index < length) {
+    var current = iteratee(array[index]);
+    if (current !== undefined) {
+      result = result === undefined ? current : (result + current);
+    }
+  }
+  return result;
+}
+
+module.exports = baseSum;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/_baseTimes.js":
 /*!*******************************************!*\
   !*** ./node_modules/lodash/_baseTimes.js ***!
@@ -11298,6 +11688,49 @@ module.exports = stubFalse;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/sumBy.js":
+/*!**************************************!*\
+  !*** ./node_modules/lodash/sumBy.js ***!
+  \**************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+var baseIteratee = __webpack_require__(/*! ./_baseIteratee */ "./node_modules/lodash/_baseIteratee.js"),
+    baseSum = __webpack_require__(/*! ./_baseSum */ "./node_modules/lodash/_baseSum.js");
+
+/**
+ * This method is like `_.sum` except that it accepts `iteratee` which is
+ * invoked for each element in `array` to generate the value to be summed.
+ * The iteratee is invoked with one argument: (value).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Math
+ * @param {Array} array The array to iterate over.
+ * @param {Function} [iteratee=_.identity] The iteratee invoked per element.
+ * @returns {number} Returns the sum.
+ * @example
+ *
+ * var objects = [{ 'n': 4 }, { 'n': 2 }, { 'n': 8 }, { 'n': 6 }];
+ *
+ * _.sumBy(objects, function(o) { return o.n; });
+ * // => 20
+ *
+ * // The `_.property` iteratee shorthand.
+ * _.sumBy(objects, 'n');
+ * // => 20
+ */
+function sumBy(array, iteratee) {
+  return (array && array.length)
+    ? baseSum(array, baseIteratee(iteratee, 2))
+    : 0;
+}
+
+module.exports = sumBy;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/toNumber.js":
 /*!*****************************************!*\
   !*** ./node_modules/lodash/toNumber.js ***!
@@ -11861,6 +12294,34 @@ exports["default"] = (sfc, props) => {
 
 /***/ }),
 
+/***/ "./resources/js/components/Base/BasePartitionMetric.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/Base/BasePartitionMetric.vue ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _BasePartitionMetric_vue_vue_type_template_id_13c50894__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BasePartitionMetric.vue?vue&type=template&id=13c50894 */ "./resources/js/components/Base/BasePartitionMetric.vue?vue&type=template&id=13c50894");
+/* harmony import */ var _BasePartitionMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BasePartitionMetric.vue?vue&type=script&lang=js */ "./resources/js/components/Base/BasePartitionMetric.vue?vue&type=script&lang=js");
+/* harmony import */ var _Users_adam_Git_saintsystems_nova_linkable_metrics_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,_Users_adam_Git_saintsystems_nova_linkable_metrics_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_BasePartitionMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_BasePartitionMetric_vue_vue_type_template_id_13c50894__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/Base/BasePartitionMetric.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
 /***/ "./resources/js/components/Base/BaseTrendMetric.vue":
 /*!**********************************************************!*\
   !*** ./resources/js/components/Base/BaseTrendMetric.vue ***!
@@ -11909,6 +12370,34 @@ __webpack_require__.r(__webpack_exports__);
 
 ;
 const __exports__ = /*#__PURE__*/(0,_Users_adam_Git_saintsystems_nova_linkable_metrics_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_BaseValueMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_BaseValueMetric_vue_vue_type_template_id_9fc46106__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/Base/BaseValueMetric.vue"]])
+/* hot reload */
+if (false) {}
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__exports__);
+
+/***/ }),
+
+/***/ "./resources/js/components/LinkablePartitionMetric.vue":
+/*!*************************************************************!*\
+  !*** ./resources/js/components/LinkablePartitionMetric.vue ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _LinkablePartitionMetric_vue_vue_type_template_id_65aa72aa__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./LinkablePartitionMetric.vue?vue&type=template&id=65aa72aa */ "./resources/js/components/LinkablePartitionMetric.vue?vue&type=template&id=65aa72aa");
+/* harmony import */ var _LinkablePartitionMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./LinkablePartitionMetric.vue?vue&type=script&lang=js */ "./resources/js/components/LinkablePartitionMetric.vue?vue&type=script&lang=js");
+/* harmony import */ var _Users_adam_Git_saintsystems_nova_linkable_metrics_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./node_modules/vue-loader/dist/exportHelper.js */ "./node_modules/vue-loader/dist/exportHelper.js");
+
+
+
+
+;
+const __exports__ = /*#__PURE__*/(0,_Users_adam_Git_saintsystems_nova_linkable_metrics_node_modules_vue_loader_dist_exportHelper_js__WEBPACK_IMPORTED_MODULE_2__["default"])(_LinkablePartitionMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_1__["default"], [['render',_LinkablePartitionMetric_vue_vue_type_template_id_65aa72aa__WEBPACK_IMPORTED_MODULE_0__.render],['__file',"resources/js/components/LinkablePartitionMetric.vue"]])
 /* hot reload */
 if (false) {}
 
@@ -11973,6 +12462,22 @@ if (false) {}
 
 /***/ }),
 
+/***/ "./resources/js/components/Base/BasePartitionMetric.vue?vue&type=script&lang=js":
+/*!**************************************************************************************!*\
+  !*** ./resources/js/components/Base/BasePartitionMetric.vue?vue&type=script&lang=js ***!
+  \**************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_BasePartitionMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_BasePartitionMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./BasePartitionMetric.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BasePartitionMetric.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
 /***/ "./resources/js/components/Base/BaseTrendMetric.vue?vue&type=script&lang=js":
 /*!**********************************************************************************!*\
   !*** ./resources/js/components/Base/BaseTrendMetric.vue?vue&type=script&lang=js ***!
@@ -12001,6 +12506,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_BaseValueMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_BaseValueMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./BaseValueMetric.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BaseValueMetric.vue?vue&type=script&lang=js");
+ 
+
+/***/ }),
+
+/***/ "./resources/js/components/LinkablePartitionMetric.vue?vue&type=script&lang=js":
+/*!*************************************************************************************!*\
+  !*** ./resources/js/components/LinkablePartitionMetric.vue?vue&type=script&lang=js ***!
+  \*************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_LinkablePartitionMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__["default"])
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_LinkablePartitionMetric_vue_vue_type_script_lang_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./LinkablePartitionMetric.vue?vue&type=script&lang=js */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/LinkablePartitionMetric.vue?vue&type=script&lang=js");
  
 
 /***/ }),
@@ -12037,6 +12558,22 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Base/BasePartitionMetric.vue?vue&type=template&id=13c50894":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/components/Base/BasePartitionMetric.vue?vue&type=template&id=13c50894 ***!
+  \********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_BasePartitionMetric_vue_vue_type_template_id_13c50894__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_BasePartitionMetric_vue_vue_type_template_id_13c50894__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./BasePartitionMetric.vue?vue&type=template&id=13c50894 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BasePartitionMetric.vue?vue&type=template&id=13c50894");
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Base/BaseTrendMetric.vue?vue&type=template&id=a8680eae":
 /*!****************************************************************************************!*\
   !*** ./resources/js/components/Base/BaseTrendMetric.vue?vue&type=template&id=a8680eae ***!
@@ -12065,6 +12602,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_BaseValueMetric_vue_vue_type_template_id_9fc46106__WEBPACK_IMPORTED_MODULE_0__.render)
 /* harmony export */ });
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_BaseValueMetric_vue_vue_type_template_id_9fc46106__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./BaseValueMetric.vue?vue&type=template&id=9fc46106 */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/Base/BaseValueMetric.vue?vue&type=template&id=9fc46106");
+
+
+/***/ }),
+
+/***/ "./resources/js/components/LinkablePartitionMetric.vue?vue&type=template&id=65aa72aa":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/LinkablePartitionMetric.vue?vue&type=template&id=65aa72aa ***!
+  \*******************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "render": () => (/* reexport safe */ _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_LinkablePartitionMetric_vue_vue_type_template_id_65aa72aa__WEBPACK_IMPORTED_MODULE_0__.render)
+/* harmony export */ });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_clonedRuleSet_5_use_0_node_modules_vue_loader_dist_templateLoader_js_ruleSet_1_rules_2_node_modules_vue_loader_dist_index_js_ruleSet_0_use_0_LinkablePartitionMetric_vue_vue_type_template_id_65aa72aa__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!../../../node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!../../../node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./LinkablePartitionMetric.vue?vue&type=template&id=65aa72aa */ "./node_modules/babel-loader/lib/index.js??clonedRuleSet-5.use[0]!./node_modules/vue-loader/dist/templateLoader.js??ruleSet[1].rules[2]!./node_modules/vue-loader/dist/index.js??ruleSet[0].use[0]!./resources/js/components/LinkablePartitionMetric.vue?vue&type=template&id=65aa72aa");
 
 
 /***/ }),

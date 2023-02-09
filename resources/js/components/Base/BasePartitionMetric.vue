@@ -1,11 +1,13 @@
 <template>
   <LoadingCard :loading="loading" class="px-6 py-4">
     <h3 class="h-6 flex mb-3 text-sm font-bold">
-      {{ title }}
+      <Link :href="this.url" :title="title" class="link-default font-normal">
+        {{ title }}
 
-      <span class="ml-auto font-semibold text-gray-400 text-xs"
-        >({{ formattedTotal }} {{ __('total') }})</span
-      >
+        <span class="ml-auto font-semibold text-gray-400 text-xs"
+          >({{ formattedTotal }} {{ __('total') }})</span
+        >
+      </Link>
     </h3>
 
     <HelpTextTooltip :text="helpText" :width="helpWidth" />
@@ -18,12 +20,19 @@
             :key="item.color"
             class="text-xs leading-normal"
           >
-            <span
-              class="inline-block rounded-full w-2 h-2 mr-2"
-              :style="{
-                backgroundColor: item.color,
-              }"
-            />{{ item.label }} ({{ item.value }} - {{ item.percentage }}%)
+            <component
+              :is="item.label in partitionLinks ? 'a' : 'span'"
+              target="_blank"
+              :href="`${item.label in partitionLinks ? partitionLinks[item.label] : '#'}`"
+              class='link-default font-normal no-underline'
+            >
+              <span
+                class="inline-block rounded-full w-2 h-2 mr-2"
+                :style="{
+                  backgroundColor: item.color,
+                }"
+              />{{ item.label }} ({{ item.value }} - {{ item.percentage }}%)
+            </component>
           </li>
         </ul>
       </div>
@@ -68,6 +77,8 @@ export default {
     helpText: {},
     helpWidth: {},
     chartData: Array,
+    partitionLinks: Array,
+    url: '',
   },
 
   data: () => ({

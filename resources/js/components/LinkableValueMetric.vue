@@ -23,16 +23,11 @@
 
   <script>
   import { minimum } from '@/util'
-  import { InteractsWithDates, MetricBehavior } from '@/mixins' //'laravel-nova'
-  // import BaseLinkableValueMetric from './Base/BaseValueMetric'
-  // import { BaseValueMetric } from 'laravel-nova'
+  import { InteractsWithDates, MetricBehavior } from '@/mixins'
+
   export default {
 
     name: 'LinkableValueMetric',
-
-    // components: [
-    //   BaseLinkableValueMetric
-    // ],
 
     // mixins: [InteractsWithDates, MetricBehavior],
 
