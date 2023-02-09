@@ -21,8 +21,7 @@
             class="text-xs leading-normal"
           >
             <component
-              :is="item.label in partitionLinks ? 'a' : 'span'"
-              target="_blank"
+              :is="item.label in partitionLinks ? 'Link' : 'span'"
               :href="`${item.label in partitionLinks ? partitionLinks[item.label] : '#'}`"
               class='link-default font-normal no-underline'
             >
