@@ -1,6 +1,6 @@
 {
     "name": "saintsystems/nova-linkable-metrics",
-    "version":"4.0.1",
+    "version":"4.1.0",
     "description": "Linkable metrics for Laravel Nova 4.x.",
     "keywords": [
         "laravel",
