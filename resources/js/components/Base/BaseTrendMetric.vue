@@ -17,7 +17,7 @@
       </div>
 
       <p class="flex items-center text-4xl mb-4">
-        <Link :href="this.url" :title="title" class="link-defaultd">
+        <Link :href="this.url" :title="title" class="link-default">
           {{ formattedValue }}
         </Link>
         <span v-if="suffix" class="ml-2 text-sm font-bold">{{
