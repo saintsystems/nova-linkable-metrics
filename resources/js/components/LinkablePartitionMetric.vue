@@ -1,5 +1,5 @@
 <template>
-    <component :is="this.card.url ? 'BaseLinkablePartitionMetric' : 'BasePartitionMetric'"
+    <BaseLinkablePartitionMetric
       :title="card.name"
       :help-text="card.helpText"
       :help-width="card.helpWidth"

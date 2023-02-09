@@ -88,6 +88,9 @@ var colorForIndex = function colorForIndex(index) {
     },
     getItemColor: function getItemColor(item, index) {
       return typeof item.color === 'string' ? item.color : colorForIndex(index);
+    },
+    getItemLink: function getItemLink(item, index) {
+      return typeof item.link === 'string' ? item.link : this.url;
     }
   },
   computed: {
@@ -107,6 +110,7 @@ var colorForIndex = function colorForIndex(index) {
           label: item.label,
           value: Nova.formatNumber(item.value),
           color: _this2.getItemColor(item, index),
+          link: _this2.getItemLink(item, index),
           percentage: Nova.formatNumber(String(item.percentage))
         };
       });
@@ -896,9 +900,12 @@ var _hoisted_2 = {
   "class": "ml-auto font-semibold text-gray-400 text-xs"
 };
 var _hoisted_3 = {
-  "class": "min-h-[90px]"
+  "class": "ml-auto font-semibold text-gray-400 text-xs"
 };
 var _hoisted_4 = {
+  "class": "min-h-[90px]"
+};
+var _hoisted_5 = {
   "class": "overflow-hidden overflow-y-auto max-h-[90px]"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
@@ -911,7 +918,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "class": "px-6 py-4"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Link, {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("h3", _hoisted_1, [$props.url ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Link, {
+        key: 0,
         href: _this.url,
         title: $props.title,
         "class": "link-default font-normal"
@@ -921,16 +929,18 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         }),
 
         _: 1 /* STABLE */
-      }, 8 /* PROPS */, ["href", "title"])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_HelpTextTooltip, {
+      }, 8 /* PROPS */, ["href", "title"])) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+        key: 1
+      }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.title) + " ", 1 /* TEXT */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_3, "(" + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($options.formattedTotal) + " " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(_ctx.__('total')) + ")", 1 /* TEXT */)], 64 /* STABLE_FRAGMENT */))]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_HelpTextTooltip, {
         text: $props.helpText,
         width: $props.helpWidth
-      }, null, 8 /* PROPS */, ["text", "width"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.formattedItems, function (item) {
+      }, null, 8 /* PROPS */, ["text", "width"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", null, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($options.formattedItems, function (item) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
           key: item.color,
           "class": "text-xs leading-normal"
-        }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(item.label in $props.partitionLinks ? 'Link' : 'span'), {
-          href: "".concat(item.label in $props.partitionLinks ? $props.partitionLinks[item.label] : '#'),
-          "class": "link-default font-normal no-underline"
+        }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(item.link ? 'Link' : 'span'), {
+          href: item.link,
+          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)("".concat(item.link ? 'font-normal no-underline link-default' : 'font-normal no-underline'))
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
             return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
@@ -942,7 +952,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }),
 
           _: 2 /* DYNAMIC */
-        }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["href"]))]);
+        }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["href", "class"]))]);
       }), 128 /* KEYED_FRAGMENT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
         ref: "chart",
         "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["right-[20px]", $options.chartClasses]),
@@ -1192,7 +1202,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)((0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveDynamicComponent)(this.card.url ? 'BaseLinkablePartitionMetric' : 'BasePartitionMetric'), {
+  var _component_BaseLinkablePartitionMetric = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("BaseLinkablePartitionMetric");
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_BaseLinkablePartitionMetric, {
     title: $props.card.name,
     "help-text": $props.card.helpText,
     "help-width": $props.card.helpWidth,

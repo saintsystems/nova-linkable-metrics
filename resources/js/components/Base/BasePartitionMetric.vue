@@ -1,13 +1,20 @@
 <template>
   <LoadingCard :loading="loading" class="px-6 py-4">
     <h3 class="h-6 flex mb-3 text-sm font-bold">
-      <Link :href="this.url" :title="title" class="link-default font-normal">
-        {{ title }}
-
-        <span class="ml-auto font-semibold text-gray-400 text-xs"
-          >({{ formattedTotal }} {{ __('total') }})</span
-        >
-      </Link>
+      <template v-if="url">
+        <Link :href="this.url" :title="title" class="link-default font-normal">
+          {{ title }}
+          <span class="ml-auto font-semibold text-gray-400 text-xs"
+            >({{ formattedTotal }} {{ __('total') }})</span
+          >
+        </Link>
+      </template>
+      <template v-else>
+          {{ title }}
+          <span class="ml-auto font-semibold text-gray-400 text-xs"
+            >({{ formattedTotal }} {{ __('total') }})</span
+          >
+      </template>
     </h3>
 
     <HelpTextTooltip :text="helpText" :width="helpWidth" />
@@ -21,9 +28,9 @@
             class="text-xs leading-normal"
           >
             <component
-              :is="item.label in partitionLinks ? 'Link' : 'span'"
-              :href="`${item.label in partitionLinks ? partitionLinks[item.label] : '#'}`"
-              class='link-default font-normal no-underline'
+              :is="item.link ? 'Link' : 'span'"
+              :href='item.link'
+              :class="`${item.link ? 'font-normal no-underline link-default' : 'font-normal no-underline'}`"
             >
               <span
                 class="inline-block rounded-full w-2 h-2 mr-2"
@@ -137,6 +144,10 @@ export default {
     getItemColor(item, index) {
       return typeof item.color === 'string' ? item.color : colorForIndex(index)
     },
+
+    getItemLink(item, index) {
+      return typeof item.link === 'string' ? item.link : this.url
+    },
   },
 
   computed: {
@@ -160,6 +171,7 @@ export default {
           label: item.label,
           value: Nova.formatNumber(item.value),
           color: this.getItemColor(item, index),
+          link: this.getItemLink(item, index),
           percentage: Nova.formatNumber(String(item.percentage)),
         }
       })
