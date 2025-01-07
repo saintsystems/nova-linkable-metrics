@@ -10,9 +10,8 @@ trait LinkableValue
      * Create a new value metric result.
      *
      * @param  mixed  $value
-     * @return \SaintSystems\Nova\LinkableMetrics\LinkableValueResult
      */
-    public function result($value)
+    public function result($value): LinkableValueResult
     {
         $linkableValueResult = new LinkableValueResult($value);
         if (!empty($this->url)) {
