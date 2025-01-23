@@ -4,7 +4,7 @@ namespace Workbench\App\Nova\Dashboards;
 
 use Laravel\Nova\Cards\Help;
 use Laravel\Nova\Dashboards\Main as Dashboard;
-use Workbench\App\Nova\Metrics\NewUsers;
+use Workbench\App\Nova\Metrics;
 
 class Main extends Dashboard
 {
@@ -16,7 +16,8 @@ class Main extends Dashboard
     public function cards(): array
     {
         return [
-            (new NewUsers)->width('1/3')->route('nova.pages.index', ['resource' => 'users']),
+            (new Metrics\NewUsers)->width('1/3')->route('nova.pages.index', ['resource' => 'users']),
+            (new Metrics\UsersPerDay)->width('1/3')->route('nova.pages.index', ['resource' => 'users']),
         ];
     }
 }
