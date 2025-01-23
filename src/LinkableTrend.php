@@ -12,7 +12,7 @@ trait LinkableTrend
      * @param  mixed  $value
      * @return \SaintSystems\Nova\LinkableMetrics\LinkableTrendResult
      */
-    public function result($value = null)
+    public function result($value = null): LinkableTrendResult
     {
         $linkableTrendResult = new LinkableTrendResult($value);
         if (!empty($this->url)) {

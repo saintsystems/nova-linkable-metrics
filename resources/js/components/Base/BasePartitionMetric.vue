@@ -2,7 +2,7 @@
   <LoadingCard :loading="loading" class="px-6 py-4">
     <h3 class="h-6 flex mb-3 text-sm font-bold">
       <template v-if="url">
-        <Link :href="this.url" :title="title" class="link-default font-normal">
+        <Link :href="url" :title="title" class="link-default font-normal">
           {{ title }}
           <span class="ml-auto font-semibold text-gray-400 text-xs"
             >({{ formattedTotal }} {{ __('total') }})</span

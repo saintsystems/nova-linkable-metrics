@@ -21,8 +21,7 @@ class CardServiceProvider extends ServiceProvider
         });
 
         Nova::serving(function (ServingNova $event) {
-            Nova::script('linkable-metric', __DIR__.'/../dist/js/card.js');
-            Nova::style('linkable-metric', __DIR__.'/../dist/css/card.css');
+            Nova::mix('linkable-metric', __DIR__.'/../dist/mix-manifest.json');
         });
     }
 
