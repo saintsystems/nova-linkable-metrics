@@ -12,7 +12,7 @@ trait LinkablePartition
      * @param  mixed  $value
      * @return \SaintSystems\Nova\LinkableMetrics\LinkablePartitionResult
      */
-    public function result(array $value)
+    public function result(array $value): LinkablePartitionResult
     {
         $linkablePartitionResult = new LinkablePartitionResult($value);
         if (!empty($this->url)) {

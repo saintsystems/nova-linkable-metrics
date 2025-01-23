@@ -18,6 +18,7 @@ class Main extends Dashboard
         return [
             (new Metrics\NewUsers)->width('1/3')->route('nova.pages.index', ['resource' => 'users']),
             (new Metrics\UsersPerDay)->width('1/3')->route('nova.pages.index', ['resource' => 'users']),
+            (new Metrics\VerifiedUsers)->width('1/3')->route('nova.pages.index', ['resource' => 'users']),
         ];
     }
 }

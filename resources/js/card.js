@@ -33,8 +33,8 @@ Nova.booting((app, store) => {
 
   app.component('BaseLinkableValueMetric', BaseLinkableValueMetric)
   app.component('BaseLinkableTrendMetric', BaseLinkableTrendMetric)
-  //app.component('BaseLinkablePartitionMetric', BaseLinkablePartitionMetric)
+  app.component('BaseLinkablePartitionMetric', BaseLinkablePartitionMetric)
   app.component('linkable-value-metric', LinkableValueMetric)
   app.component('linkable-trend-metric', LinkableTrendMetric)
-  //app.component('linkable-partition-metric', LinkablePartitionMetric)
+  app.component('linkable-partition-metric', LinkablePartitionMetric)
 })

@@ -117,10 +117,6 @@ export default {
       return this.card.url ? 'BaseLinkableValueMetric' : 'BaseValueMetric'
     },
 
-    link() {
-      return this.card.url
-    },
-
     hasRanges() {
       return this.card.ranges.length > 0
     },
