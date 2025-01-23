@@ -1,5 +1,5 @@
 <template>
-    <component :is="this.card.url ? 'BaseLinkableTrendMetric' : 'BaseTrendMetric'"
+    <component :is="card.url ? 'BaseLinkableTrendMetric' : 'BaseTrendMetric'"
       @selected="handleRangeSelected"
       :title="card.name"
       :help-text="card.helpText"
@@ -13,7 +13,7 @@
       :suffix-inflection="suffixInflection"
       :selected-range-key="selectedRangeKey"
       :loading="loading"
-      :url="this.card.url"
+      :url="card.url"
     />
   </template>
 

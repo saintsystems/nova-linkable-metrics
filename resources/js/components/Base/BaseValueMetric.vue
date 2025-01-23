@@ -10,8 +10,8 @@
           class="ml-auto w-[6rem] flex-shrink-0"
           size="xxs"
           :options="ranges"
-          v-model="selectedRange"
-          @change="handleChange"
+          :value="selectedRangeKey"
+          @update:modelValue="$emit('selected', $event)"
           :aria-label="__('Select Ranges')"
         />
       </div>
@@ -21,7 +21,7 @@
           v-if="icon"
           class="rounded-lg bg-primary-500 text-white h-14 w-14 flex items-center justify-center"
         >
-          <Icon :type="icon" width="24" height="24" />
+          <Icon :name="icon" />
         </div>
 
         <div>
@@ -31,7 +31,7 @@
             class="flex items-center text-4xl"
             :rounded="false"
           >
-            <Link :href="this.url" :title="title" class="link-default">
+            <Link :href="url" :title="title" class="link-default">
               <span v-tooltip="`${tooltipFormattedValue}`">
               {{ formattedValue }}
               </span>
@@ -109,11 +109,16 @@
   <script>
   import { increaseOrDecrease, singularOrPlural } from 'laravel-nova-util'
   import { CopiesToClipboard } from 'laravel-nova'
+  import { Icon } from 'laravel-nova-ui'
 
   export default {
     name: 'BaseLinkableValueMetric',
 
     mixins: [CopiesToClipboard],
+
+    components: {
+      Icon,
+    },
 
     emits: ['selected'],
 
@@ -138,22 +143,7 @@
       zeroResult: { default: false },
     },
 
-    data() {
-      return {
-        copied: false,
-        selectedRange: this.selectedRangeKey,
-      }
-    },
-
-    watch: {
-      selectedRange(newValue) {
-        this.$emit('selected', newValue)
-      },
-
-      selectedRangeKey(newRange, oldRange) {
-        this.selectedRange = newRange
-      },
-    },
+    data: () => ({ copied: false }),
 
     methods: {
       handleCopyClick() {

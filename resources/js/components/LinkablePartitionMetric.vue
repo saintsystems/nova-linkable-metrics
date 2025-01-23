@@ -5,7 +5,7 @@
       :help-width="card.helpWidth"
       :chart-data="chartData"
       :loading="loading"
-      :url="this.card.url"
+      :url="card.url"
     />
   </template>
 
