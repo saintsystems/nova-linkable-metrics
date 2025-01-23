@@ -10,8 +10,8 @@
   </template>
 
   <script>
-  import { MetricBehavior } from '@/mixins'
-  import { minimum } from '@/util'
+  import { MetricBehavior } from 'laravel-nova'
+  import { minimum } from 'laravel-nova-util'
 
   export default {
     name: 'LinkablePartitionMetric',
@@ -84,17 +84,6 @@
       },
     },
     computed: {
-      metricEndpoint() {
-        const lens = this.lens !== '' ? `/lens/${this.lens}` : ''
-        if (this.resourceName && this.resourceId) {
-          return `/nova-api/${this.resourceName}${lens}/${this.resourceId}/metrics/${this.card.uriKey}`
-        } else if (this.resourceName) {
-          return `/nova-api/${this.resourceName}${lens}/metrics/${this.card.uriKey}`
-        } else {
-          return `/nova-api/metrics/${this.card.uriKey}`
-        }
-      },
-
       metricPayload() {
         const payload = { params: {} }
 

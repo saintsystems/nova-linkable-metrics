@@ -10,7 +10,7 @@
           class="ml-auto w-[6rem] flex-shrink-0"
           size="xxs"
           :options="ranges"
-          v-model:selected="selectedRangeKey"
+          v-model="selectedRange"
           @change="handleChange"
           :aria-label="__('Select Ranges')"
         />
@@ -37,7 +37,7 @@
   import debounce from 'lodash/debounce'
   import Chartist from 'chartist'
   import 'chartist/dist/chartist.min.css'
-  import { singularOrPlural } from '@/mixins'
+  import { singularOrPlural } from 'laravel-nova-util'
   import ChartistTooltip from 'chartist-plugin-tooltips-updated'
   import 'chartist-plugin-tooltips-updated/dist/chartist-plugin-tooltip.css'
 
@@ -66,13 +66,22 @@
       },
     },
 
-    data: () => ({
-      chartist: null,
-      resizeObserver: null,
-    }),
+    data() {
+      return {
+        chartist: null,
+        resizeObserver: null,
+        selectedRange: this.selectedRangeKey,
+      }
+    },
 
     watch: {
-      selectedRangeKey: function (newRange, oldRange) {
+      selectedRange(newRange) {
+        this.$emit('selected', newRange)
+        this.renderChart()
+      },
+
+      selectedRangeKey(newRange, oldRange) {
+        this.selectedRange = newRange
         this.renderChart()
       },
 
@@ -170,12 +179,6 @@
     methods: {
       renderChart() {
         this.chartist.update(this.chartData)
-      },
-
-      handleChange(event) {
-        const value = event?.target?.value || event
-
-        this.$emit('selected', value)
       },
 
       transformTooltipText(value) {

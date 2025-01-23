@@ -22,8 +22,8 @@
   </template>
 
   <script>
-  import { minimum } from '@/util'
-  import { InteractsWithDates, MetricBehavior } from '@/mixins'
+  import { InteractsWithDates, MetricBehavior } from 'laravel-nova'
+  import { minimum } from 'laravel-nova-util'
 
   export default {
 
@@ -169,17 +169,6 @@
         }
 
         return payload
-      },
-
-      metricEndpoint() {
-        const lens = this.lens !== '' ? `/lens/${this.lens}` : ''
-        if (this.resourceName && this.resourceId) {
-          return `/nova-api/${this.resourceName}${lens}/${this.resourceId}/metrics/${this.card.uriKey}`
-        } else if (this.resourceName) {
-          return `/nova-api/${this.resourceName}${lens}/metrics/${this.card.uriKey}`
-        } else {
-          return `/nova-api/metrics/${this.card.uriKey}`
-        }
       },
     },
   }

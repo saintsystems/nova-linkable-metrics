@@ -10,7 +10,7 @@
           class="ml-auto w-[6rem] flex-shrink-0"
           size="xxs"
           :options="ranges"
-          v-model:selected="selectedRangeKey"
+          v-model="selectedRange"
           @change="handleChange"
           :aria-label="__('Select Ranges')"
         />
@@ -107,8 +107,8 @@
   </template>
 
   <script>
-  import { increaseOrDecrease, singularOrPlural } from '@/util'
-  import { CopiesToClipboard } from '@/mixins'
+  import { increaseOrDecrease, singularOrPlural } from 'laravel-nova-util'
+  import { CopiesToClipboard } from 'laravel-nova'
 
   export default {
     name: 'BaseLinkableValueMetric',
@@ -138,15 +138,24 @@
       zeroResult: { default: false },
     },
 
-    data: () => ({ copied: false }),
+    data() {
+      return {
+        copied: false,
+        selectedRange: this.selectedRangeKey,
+      }
+    },
 
-    methods: {
-      handleChange(event) {
-        let value = event?.target?.value || event
-
-        this.$emit('selected', value)
+    watch: {
+      selectedRange(newValue) {
+        this.$emit('selected', newValue)
       },
 
+      selectedRangeKey(newRange, oldRange) {
+        this.selectedRange = newRange
+      },
+    },
+
+    methods: {
       handleCopyClick() {
         if (this.copyable) {
           this.copied = true
@@ -161,7 +170,6 @@
     },
 
     computed: {
-
       growthPercentage() {
         return Math.abs(this.increaseOrDecrease)
       },

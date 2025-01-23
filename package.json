@@ -11,14 +11,9 @@
         "nova:install": "npm --prefix='../../vendor/laravel/nova' ci"
     },
     "devDependencies": {
-        "@vue/compiler-sfc": "^3.2.22",
-        "laravel-mix": "^6.0.41",
-        "postcss": "^8.3.11",
-        "vue-loader": "^16.8.3",
-        "vue-template-compiler": "^2.6.14"
+        "laravel-nova-devtool": "file:vendor/laravel/nova-devtool"
     },
     "dependencies": {
-        "@vue/compat": "^3.2.29",
         "chartist": "^0.11.0",
         "chartist-plugin-tooltips-updated": "^0.1.4"
     }
