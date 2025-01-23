@@ -11,7 +11,8 @@
         "nova:install": "npm --prefix='../../vendor/laravel/nova' ci"
     },
     "devDependencies": {
-        "laravel-nova-devtool": "file:vendor/laravel/nova-devtool"
+        "laravel-nova-devtool": "file:vendor/laravel/nova-devtool",
+        "lodash": "^4.17.21"
     },
     "dependencies": {
         "chartist": "^0.11.0",
