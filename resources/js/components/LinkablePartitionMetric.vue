@@ -66,6 +66,7 @@ export default {
 
   computed: {
     componentName() {
+      return 'BaseLinkablePartitionMetric';
       return this.card.url ? 'BaseLinkablePartitionMetric' : 'BasePartitionMetric'
     },
 
