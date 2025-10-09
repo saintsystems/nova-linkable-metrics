@@ -19,8 +19,13 @@
 
     <HelpTextTooltip :text="helpText" :width="helpWidth" />
 
-    <div class="min-h-[90px]">
-      <div class="overflow-hidden overflow-y-auto max-h-[90px]">
+    <div class="flex min-h-[90px]">
+      <div
+          class="flex-1 overflow-hidden overflow-y-auto"
+          :class="{
+            'max-h-[90px]': legendsHeight === 'fixed',
+        }"
+      >
         <ul>
           <li
             v-for="item in formattedItems"
@@ -45,9 +50,8 @@
 
       <div
         ref="chart"
-        class="right-[20px]"
-        :class="chartClasses"
-        style="width: 90px; height: 90px; bottom: 30px; top: calc(50% + 15px)"
+        class="flex-none rounded-b-lg ct-chart mr-4 w-[90px] h-[90px]"
+        :class="{ invisible: this.currentTotal <= 0 }"
       />
     </div>
   </LoadingCard>
@@ -83,6 +87,7 @@ export default {
     helpText: {},
     helpWidth: {},
     chartData: Array,
+    legendsHeight: { type: String, default: 'fixed' },
     url: '',
   },
 
@@ -108,22 +113,19 @@ export default {
   },
 
   mounted() {
-    this.chartist = new Chartist.Pie(
-      this.$refs.chart,
-      this.formattedChartData,
-      {
-        donut: true,
-        donutWidth: 10,
-        donutSolid: true,
-        startAngle: 270,
-        showLabel: false,
-      }
-    )
+    let donutWidth = 10
+
+    this.chartist = new PieChart(this.$refs.chart, this.formattedChartData, {
+      donut: true,
+      donutWidth,
+      startAngle: 270,
+      showLabel: false,
+    })
 
     this.chartist.on('draw', context => {
       if (context.type === 'slice') {
         context.element.attr({
-          style: `fill: ${context.meta.color} !important`,
+          style: `stroke-width: ${donutWidth}px; stroke: ${context.meta.color} !important;`,
         })
       }
     })
@@ -151,13 +153,7 @@ export default {
 
   computed: {
     chartClasses() {
-      return [
-        'vertical-center',
-        'rounded-b-lg',
-        'ct-chart',
-        'mr-4',
-        this.currentTotal <= 0 ? 'invisible' : '',
-      ]
+      return []
     },
 
     formattedChartData() {
