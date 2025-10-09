@@ -6,6 +6,7 @@
     :help-width="card.helpWidth"
     :chart-data="chartData"
     :loading="loading"
+    :legends-height="card.height"
     :url="card.url"
   />
 </template>
