@@ -115,9 +115,9 @@ export default {
   mounted() {
     let donutWidth = 10
 
-    this.chartist = new PieChart(this.$refs.chart, this.formattedChartData, {
+    this.chartist = new Chartist.Pie(this.$refs.chart, this.formattedChartData, {
       donut: true,
-      donutWidth,
+      donutWidth: 10,
       startAngle: 270,
       showLabel: false,
     })
